@@ -13,10 +13,10 @@ function App() {
 
   return (
     <main>
-      <div class="title-div">
-        <h1 class="main-title">Taskify</h1>
+      <div class="top-row">
+        <button class="create-button" type="button">Create +</button>
+        <p>Balls</p>
       </div>
-
       <p>{greetMsg()}</p>
     </main>
   );

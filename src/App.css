@@ -1,12 +1,23 @@
 /* Entire page */
 :root{
-  background-color: #DCE5E8;
+  background-color: #e9eff1be;
 }
 
-.title-div{
-  text-align: center;
+.top-row{
+  display: flex;
 }
 
-.main-title{
-  font-size: 50px;
+.create-button{
+  background-color: #25E21F;
+  font-size: 18px;
+  padding: 15px 30px;
+  margin: 5px 10px 0px 0px;
+  border-radius: 10px;
+  border: 2px solid;
+  align-self: flex-start;
+}
+
+.create-button:hover{
+  background-color: #25e21f9d;
+  transform: scaleX(1.02) scaleY(1.02);
 }
