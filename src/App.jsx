@@ -14,8 +14,19 @@ function App() {
   return (
     <main>
       <div class="top-row">
+        <p>Taskify</p>
         <button class="create-button" type="button">Create +</button>
-        <p>Balls</p>
+      </div>
+      <div class="main-body">
+        <div>
+          <h2 class="completed category-title">Completed</h2>
+        </div>
+        <div>
+          <h2 class="in-progress category-title">In Progress</h2>
+        </div>
+        <div>
+          <h2 class="upcoming category-title">Upcoming</h2>
+        </div>
       </div>
       <p>{greetMsg()}</p>
     </main>

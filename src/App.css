@@ -1,23 +1,56 @@
 /* Entire page */
-:root{
+html{
   background-color: #e9eff1be;
 }
 
+/* Top row that contains the "create" button */
 .top-row{
   display: flex;
+  flex-direction: row;
 }
 
+/* margin-left: auto is what pushes the button
+  to the end of the flex main axis*/
 .create-button{
   background-color: #25E21F;
-  font-size: 18px;
-  padding: 15px 30px;
+  font-size: 16px;
+  padding: 10px 15px;
   margin: 5px 10px 0px 0px;
   border-radius: 10px;
   border: 2px solid;
-  align-self: flex-start;
+  margin-left: auto;
 }
 
 .create-button:hover{
   background-color: #25e21f9d;
   transform: scaleX(1.02) scaleY(1.02);
+}
+
+.create-button:active{
+  background-color: #25E21F;
+  transform: scaleX(0.98) scaleY(0.98);
+}
+
+.main-body{
+  margin-top: 2vh;
+  display: flex;
+  justify-content: space-around;
+  background-color: #e9eff1e3;
+}
+
+.category-title{
+  padding: 10px 20px;
+  width: 100%;
+}
+
+.completed{
+  background-color: aqua;
+}
+
+.in-progress{
+  background-color: chartreuse;
+}
+
+.upcoming{
+  background-color: cyan;
 }
