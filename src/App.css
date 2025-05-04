@@ -31,26 +31,41 @@ html{
   transform: scaleX(0.98) scaleY(0.98);
 }
 
-.main-body{
+.category-columns{
   margin-top: 2vh;
   display: flex;
   justify-content: space-around;
   background-color: #e9eff1e3;
 }
 
-.category-title{
-  padding: 10px 20px;
-  width: 100%;
+.completed-column{
+  flex-grow: 1;
 }
 
-.completed{
-  background-color: aqua;
+.completed-title{
+  background-color: #87c2fa;
+  text-align: center;
+  border-top-left-radius: 15px;
+  padding: 2px 0px
 }
 
-.in-progress{
-  background-color: chartreuse;
+.progress-column{
+  flex-grow: 1;
 }
 
-.upcoming{
-  background-color: cyan;
+.progress-title{
+  background-color: #ff7777;
+  text-align: center;
+  padding: 2px 0px
+}
+
+.upcoming-column{
+  flex-grow: 1;
+}
+
+.upcoming-title{
+  background-color: #86ff88;
+  text-align: center;
+  border-top-right-radius: 15px;
+  padding: 2px 0px
 }

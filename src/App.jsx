@@ -17,15 +17,30 @@ function App() {
         <p>Taskify</p>
         <button class="create-button" type="button">Create +</button>
       </div>
-      <div class="main-body">
-        <div>
-          <h2 class="completed category-title">Completed</h2>
+      <div class="category-columns">
+        <div class="completed-column">
+          <div class="completed-title">
+            <h2>Completed</h2>
+          </div>
+          <div class="completed-body">
+            <p>Completed body</p>
+          </div>
         </div>
-        <div>
-          <h2 class="in-progress category-title">In Progress</h2>
+        <div class="progress-column">
+          <div class="progress-title">
+            <h2>In Progress</h2>
+          </div>
+          <div class="progress-body">
+            <p>In progress body</p>
+          </div>
         </div>
-        <div>
-          <h2 class="upcoming category-title">Upcoming</h2>
+        <div class="upcoming-column">
+          <div class="upcoming-title">
+            <h2>Upcoming</h2>
+          </div>
+          <div class="upcoming-body">
+            <p>Upcoming body</p>
+          </div>
         </div>
       </div>
       <p>{greetMsg()}</p>
