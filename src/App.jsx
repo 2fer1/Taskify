@@ -15,31 +15,33 @@ function App() {
     <main>
       <div class="top-row">
         <p>Taskify</p>
-        <button class="create-button" type="button">Create +</button>
       </div>
       <div class="category-columns">
         <div class="completed-column">
           <div class="completed-title">
             <h2>Completed</h2>
           </div>
-          <div class="completed-body">
+          <div class="column-body completed-body">
             <p>Completed body</p>
+            <button class="create-button">+</button>
           </div>
         </div>
         <div class="progress-column">
           <div class="progress-title">
             <h2>In Progress</h2>
           </div>
-          <div class="progress-body">
+          <div class="column-body progress-body">
             <p>In progress body</p>
+            <button class="create-button">+</button>
           </div>
         </div>
         <div class="upcoming-column">
           <div class="upcoming-title">
             <h2>Upcoming</h2>
           </div>
-          <div class="upcoming-body">
+          <div class="column-body upcoming-body">
             <p>Upcoming body</p>
+            <button class="create-button">+</button>
           </div>
         </div>
       </div>

@@ -1,6 +1,17 @@
+@font-face {
+  font-family: Inter;
+  src: url("/public/font/Inter-VariableFont_opsz\,wght.ttf");
+}
+@font-face {
+  font-family: Inter;
+  src: url("/public/font/Inter-Italic-VariableFont_opsz\,wght.ttf");
+  font-style: italic;
+}
+
 /* Entire page */
 html{
   background-color: #e9eff1be;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
 }
 
 /* Top row that contains the "create" button */
@@ -9,33 +20,18 @@ html{
   flex-direction: row;
 }
 
-/* margin-left: auto is what pushes the button
-  to the end of the flex main axis*/
-.create-button{
-  background-color: #25E21F;
-  font-size: 16px;
-  padding: 10px 15px;
-  margin: 5px 10px 0px 0px;
-  border-radius: 10px;
-  border: 2px solid;
-  margin-left: auto;
-}
-
-.create-button:hover{
-  background-color: #25e21f9d;
-  transform: scaleX(1.02) scaleY(1.02);
-}
-
-.create-button:active{
-  background-color: #25E21F;
-  transform: scaleX(0.98) scaleY(0.98);
-}
-
 .category-columns{
+  margin: auto;
   margin-top: 2vh;
   display: flex;
   justify-content: space-around;
   background-color: #e9eff1e3;
+  max-width: 80vw;
+}
+
+.column-body{
+  display: flex;
+  flex-direction: column;
 }
 
 .completed-column{
@@ -46,17 +42,28 @@ html{
   background-color: #87c2fa;
   text-align: center;
   border-top-left-radius: 15px;
-  padding: 2px 0px
+  padding: 2px 0px;
+}
+
+.completed-body{
+  padding: 10px 10px;
+  min-height: 30vh;
 }
 
 .progress-column{
   flex-grow: 1;
+  background-color: #e3e7e9e3;
 }
 
 .progress-title{
   background-color: #ff7777;
   text-align: center;
-  padding: 2px 0px
+  padding: 2px 0px;
+}
+
+.progress-body{
+  padding: 10px 10px;
+  min-height: 30vh;
 }
 
 .upcoming-column{
@@ -67,5 +74,16 @@ html{
   background-color: #86ff88;
   text-align: center;
   border-top-right-radius: 15px;
-  padding: 2px 0px
+  padding: 2px 0px;
+}
+
+.upcoming-body{
+  padding: 10px 10px;
+  min-height: 30vh;
+}
+
+.create-button{
+  margin-top: auto;
+  max-width: fit-content;
+  align-self: flex-end;
 }
