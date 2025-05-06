@@ -84,6 +84,26 @@ html{
 
 .create-button{
   margin-top: auto;
-  max-width: fit-content;
+  font-size: 18px;
+  padding: 0.6vh 0.6vw;
   align-self: flex-end;
+}
+
+.popup{
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup-body {
+  background-color: #e3e7e9e3;
+  width: 100%;
+  height: 100%;
+  width: 100%;
+  max-width: 50vw;
+  max-height: 50vh;
+  min-width: 450px;
+  min-height: 350px;
 }
