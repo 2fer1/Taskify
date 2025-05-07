@@ -54,8 +54,28 @@ function App() {
             <div class="popup-body">
               <h2>Create Task</h2>
               <div>
-                <label for="title">Title:</label>
+                <label for="title">Title: </label>
                 <input type="text" id="title" name="title"></input>
+              </div>
+              <div>
+                <label for="start-date">Start Date: </label>
+                <input type="date" name="start-date" id="start-date"/>
+              </div>
+              <div>
+                <label for="end-date">End Date: </label>
+                <input type="date" name="end-date" id="end-date"/>
+              </div>
+              <div>
+                <label for="start-time">Start Time: </label>
+                <input type="time" name="start-time" id="start-time"/>
+              </div>
+              <div>
+                <label for="end-time">End Time: </label>
+                <input type="time" name="end-time" id="end-time"/>
+              </div>
+              <div>
+                <label for="description">Description: </label>
+                <input type="text" id="description" name="description"></input>
               </div>
               <div class="button-container">
               <button class="create-button" onClick={() => setShow((prev) => !prev)}>Create</button>
