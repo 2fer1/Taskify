@@ -25,7 +25,7 @@ function App() {
           </div>
           <div class="column-body completed-body">
             <p>Completed body</p>
-            <button class="create-button" onClick={() => setShow((prev) => !prev)}>+</button>
+            <button class="add-button" onClick={() => setShow((prev) => !prev)}>+</button>
           </div>
         </div>
         <div class="progress-column">
@@ -34,7 +34,7 @@ function App() {
           </div>
           <div class="column-body progress-body">
             <p>In progress body</p>
-            <button class="create-button" onClick={() => setShow((prev) => !prev)}>+</button>
+            <button class="add-button" onClick={() => setShow((prev) => !prev)}>+</button>
           </div>
         </div>
         <div class="upcoming-column">
@@ -43,7 +43,7 @@ function App() {
           </div>
           <div class="column-body upcoming-body">
             <p>Upcoming body</p>
-            <button class="create-button" onClick={() => setShow((prev) => !prev)}>+</button>
+            <button class="add-button" onClick={() => setShow((prev) => !prev)}>+</button>
           </div>
         </div>
       </div>
@@ -52,7 +52,15 @@ function App() {
         <Show when={showPopUp()}>
           <div class="popup">
             <div class="popup-body">
-              <p>Portal</p>
+              <h2>Create Task</h2>
+              <div>
+                <label for="title">Title:</label>
+                <input type="text" id="title" name="title"></input>
+              </div>
+              <div class="button-container">
+              <button class="create-button" onClick={() => setShow((prev) => !prev)}>Create</button>
+              <button class="cancel-button" onClick={() => setShow((prev) => !prev)}>Cancel</button>
+              </div>
             </div>
           </div>
         </Show>

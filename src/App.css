@@ -82,7 +82,7 @@ html{
   min-height: 30vh;
 }
 
-.create-button{
+.add-button{
   margin-top: auto;
   font-size: 18px;
   padding: 0.6vh 0.6vw;
@@ -99,6 +99,8 @@ html{
 
 .popup-body {
   background-color: #e3e7e9e3;
+  display: flex;
+  flex-direction: column;
   width: 100%;
   height: 100%;
   width: 100%;
@@ -106,4 +108,36 @@ html{
   max-height: 50vh;
   min-width: 450px;
   min-height: 350px;
+  padding: 20px 20px;
+}
+
+.popup-body > h2{
+  font-size: 22px;
+  align-self: center;
+}
+
+.button-container{
+  display: flex;
+  justify-content: space-between;
+  margin-top: auto;
+  margin-left: auto;
+}
+
+.create-button{
+  margin-top: auto;
+  margin-right: 0.5vw;
+  font-size: 18px;
+  padding: 0.6vh 0.6vw;
+  align-self: flex-end;
+  background-color: #28FF28;
+  border-color: #28FF28;
+}
+
+.cancel-button{
+  margin-top: auto;
+  font-size: 18px;
+  padding: 0.6vh 0.6vw;
+  align-self: flex-end;
+  background-color: white;
+  border-color: #28FF28;
 }
