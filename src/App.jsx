@@ -75,7 +75,15 @@ function App() {
               </div>
               <div>
                 <label for="description">Description: </label>
-                <input type="text" id="description" name="description"></input>
+                <textarea name="description" id="description" maxLength="350"></textarea>
+              </div>
+              <div>
+                <label for="task-imporance">Importance Level: </label>
+                <select name="task-imporance" id="task-imporance">
+                  <option value="level1">Basic</option>
+                  <option value="level2">Highlighting</option>
+                  <option value="level3">Desktop Notifications</option>
+                </select>
               </div>
               <div class="button-container">
               <button class="create-button" onClick={() => setShow((prev) => !prev)}>Create</button>
