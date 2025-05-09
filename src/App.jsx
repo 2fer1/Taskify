@@ -73,9 +73,9 @@ function App() {
                 <label for="end-time">End Time: </label>
                 <input type="time" name="end-time" id="end-time"/>
               </div>
-              <div>
+              <div class="description-field">
                 <label for="description">Description: </label>
-                <textarea name="description" id="description" maxLength="350"></textarea>
+                <textarea name="description" id="description" maxLength="350" rows="5"></textarea>
               </div>
               <div>
                 <label for="task-imporance">Importance Level: </label>

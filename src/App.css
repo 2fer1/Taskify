@@ -109,7 +109,7 @@ html{
   max-height: 50vh;
   min-width: 450px;
   min-height: 350px;
-  padding: 20px 20px;
+  padding: 3vh 2vw;
 }
 
 .popup-body > h2{
@@ -141,4 +141,9 @@ html{
   align-self: flex-end;
   background-color: white;
   border-color: #28FF28;
+}
+
+.description-field{
+  display: flex;
+  flex-direction: column;
 }
