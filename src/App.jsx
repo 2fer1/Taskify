@@ -86,8 +86,8 @@ function App() {
                 </select>
               </div>
               <div class="button-container">
-              <button class="create-button" onClick={() => setShow((prev) => !prev)}>Create</button>
-              <button class="cancel-button" onClick={() => setShow((prev) => !prev)}>Cancel</button>
+                <button class="create-button" onClick={() => setShow((prev) => !prev)}>Create</button>
+                <button class="cancel-button" onClick={() => setShow((prev) => !prev)}>Cancel</button>
               </div>
             </div>
           </div>
