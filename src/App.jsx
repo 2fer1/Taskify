@@ -2,11 +2,33 @@ import { createSignal } from "solid-js";
 import { invoke } from "@tauri-apps/api/core";
 import "./App.css";
 import { Portal } from "solid-js/web";
+import Task from "./Classes/task";
+import { createStore } from "solid-js/store";
 
 function App() {
   const [showPopUp, setShow] = createSignal(false);
   const [greetMsg, setGreetMsg] = createSignal("");
   const [name, setName] = createSignal("");
+
+  const [taskStore, setStore] = createStore(
+    {
+      completed: [],
+      inProgress: [],
+      upcoming: []
+    }
+  )
+
+  let title;
+  let start;
+  let end;
+  let description;
+  let importance;
+
+  function createTask(){
+    const task = new Task(title.value, start.value, end.value, description.value, importance.value);
+    setStore("completed", taskStore.completed.length, task);
+    setShow((prev) => !prev);
+  }
 
   async function greet() {
     // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
@@ -25,6 +47,13 @@ function App() {
           </div>
           <div class="column-body completed-body">
             <p>Completed body</p>
+
+            <ol>
+              <For each={taskStore.completed}>
+                {(task) => <li>{}</li>}
+              </For>
+            </ol>
+
             <button class="add-button" onClick={() => setShow((prev) => !prev)}>+</button>
           </div>
         </div>
@@ -55,38 +84,30 @@ function App() {
               <h2>Create Task</h2>
               <div>
                 <label for="title">Title: </label>
-                <input type="text" id="title" name="title"></input>
+                <input type="text" id="title" name="title" ref={title}></input>
               </div>
               <div>
-                <label for="start-date">Start Date: </label>
-                <input type="date" name="start-date" id="start-date"/>
+                <label for="start">Start Date/Time: </label>
+                <input type="datetime-local" name="start" id="start" ref={start} />
               </div>
               <div>
-                <label for="end-date">End Date: </label>
-                <input type="date" name="end-date" id="end-date"/>
-              </div>
-              <div>
-                <label for="start-time">Start Time: </label>
-                <input type="time" name="start-time" id="start-time"/>
-              </div>
-              <div>
-                <label for="end-time">End Time: </label>
-                <input type="time" name="end-time" id="end-time"/>
+                <label for="end-date">End Date/Time: </label>
+                <input type="datetime-local" name="end" id="end" ref={end}/>
               </div>
               <div class="description-field">
                 <label for="description">Description: </label>
-                <textarea name="description" id="description" maxLength="350" rows="5"></textarea>
+                <textarea name="description" id="description" maxLength="350" rows="5" ref={description}></textarea>
               </div>
               <div>
-                <label for="task-imporance">Importance Level: </label>
-                <select name="task-imporance" id="task-imporance">
+                <label for="task-importance">Importance Level: </label>
+                <select name="task-importance" id="task-importance" ref={importance}>
                   <option value="level1">Basic</option>
                   <option value="level2">Highlighting</option>
                   <option value="level3">Desktop Notifications</option>
                 </select>
               </div>
               <div class="button-container">
-                <button class="create-button" onClick={() => setShow((prev) => !prev)}>Create</button>
+                <button class="create-button" onClick={() => createTask()}>Create</button>
                 <button class="cancel-button" onClick={() => setShow((prev) => !prev)}>Cancel</button>
               </div>
             </div>

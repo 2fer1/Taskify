@@ -6,4 +6,26 @@ class Task{
         this.description = description;
         this.importance = importance;
     }
+
+    getStart(){
+        return this.start;
+    }
+
+    getEnd(){
+        return this.end;
+    }
+
+    getTitle(){
+        return this.title;
+    }
+
+    getDescription(){
+        return this.description;
+    }
+
+    getImportance(){
+        return this.importance;
+    }
 }
+
+export default Task;
