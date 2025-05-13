@@ -1,30 +1,36 @@
 class Task{
-    constructor(start, end, title, description, importance){
-        this.start = start;
-        this.end = end;
-        this.title = title;
-        this.description = description;
-        this.importance = importance;
+    #title;
+    #start;
+    #end;
+    #description;
+    #importance;
+
+    constructor(title, start, end, description, importance){
+        this.#title = title;
+        this.#start = new Date(start);
+        this.#end = new Date(end);
+        this.#description = description;
+        this.#importance = importance;
     }
 
-    getStart(){
-        return this.start;
+    get start(){
+        return this.#start;
     }
 
-    getEnd(){
-        return this.end;
+    get end(){
+        return this.#end;
     }
 
-    getTitle(){
-        return this.title;
+    get title(){
+        return this.#title;
     }
 
-    getDescription(){
-        return this.description;
+    get description(){
+        return this.#description;
     }
 
-    getImportance(){
-        return this.importance;
+    get importance(){
+        return this.#importance;
     }
 }
 

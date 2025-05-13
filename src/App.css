@@ -147,3 +147,13 @@ html{
   display: flex;
   flex-direction: column;
 }
+
+.task-container{
+  list-style-type: none;
+  padding: 0px;
+}
+
+.task-item{
+  background-color: #28FF28;
+  
+}

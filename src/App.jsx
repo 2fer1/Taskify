@@ -46,11 +46,17 @@ function App() {
             <h2>Completed</h2>
           </div>
           <div class="column-body completed-body">
-            <p>Completed body</p>
-
-            <ol>
+            <ol class="task-container">
               <For each={taskStore.completed}>
-                {(task) => <li>{}</li>}
+                {(task) => 
+                  (<li class="task-item">
+                    <h3>{task.title}</h3>
+                    <p>{task.description}</p>
+                    <div>
+                      <p>{task.start.toLocaleString()}</p>
+                      <p>{task.end.toLocaleString()}</p>
+                    </div>
+                  </li>)}
               </For>
             </ol>
 
