@@ -9,6 +9,7 @@ function App() {
   const [showPopUp, setShow] = createSignal(false);
   const [greetMsg, setGreetMsg] = createSignal("");
   const [name, setName] = createSignal("");
+  const [chosenColumn, setColumn] = createSignal("")
 
   const [taskStore, setStore] = createStore(
     {
@@ -24,9 +25,14 @@ function App() {
   let description;
   let importance;
 
+  function changeColumn(column){
+    setColumn(column);
+    setShow((prev) => !prev);
+  }
+
   function createTask(){
     const task = new Task(title.value, start.value, end.value, description.value, importance.value);
-    setStore("completed", taskStore.completed.length, task);
+    setStore(chosenColumn(), taskStore[chosenColumn()].length, task);
     setShow((prev) => !prev);
   }
 
@@ -46,6 +52,8 @@ function App() {
             <h2>Completed</h2>
           </div>
           <div class="column-body completed-body">
+            <button class="add-button" onClick={() => changeColumn("completed")}>+</button>
+            
             <ol class="task-container">
               <For each={taskStore.completed}>
                 {(task) => 
@@ -59,8 +67,6 @@ function App() {
                   </li>)}
               </For>
             </ol>
-
-            <button class="add-button" onClick={() => setShow((prev) => !prev)}>+</button>
           </div>
         </div>
         <div class="progress-column">
@@ -68,8 +74,21 @@ function App() {
             <h2>In Progress</h2>
           </div>
           <div class="column-body progress-body">
-            <p>In progress body</p>
-            <button class="add-button" onClick={() => setShow((prev) => !prev)}>+</button>
+            <button class="add-button" onClick={() => changeColumn("inProgress")}>+</button>
+
+            <ol class="task-container">
+              <For each={taskStore.inProgress}>
+                {(task) => 
+                  (<li class="task-item">
+                    <h3>{task.title}</h3>
+                    <p>{task.description}</p>
+                    <div>
+                      <p>{task.start.toLocaleString()}</p>
+                      <p>{task.end.toLocaleString()}</p>
+                    </div>
+                  </li>)}
+              </For>
+            </ol>
           </div>
         </div>
         <div class="upcoming-column">
@@ -77,8 +96,21 @@ function App() {
             <h2>Upcoming</h2>
           </div>
           <div class="column-body upcoming-body">
-            <p>Upcoming body</p>
-            <button class="add-button" onClick={() => setShow((prev) => !prev)}>+</button>
+            <button class="add-button" onClick={() => changeColumn("upcoming")}>+</button>
+
+            <ol class="task-container">
+              <For each={taskStore.upcoming}>
+                {(task) => 
+                  (<li class="task-item">
+                    <h3>{task.title}</h3>
+                    <p>{task.description}</p>
+                    <div>
+                      <p>{task.start.toLocaleString()}</p>
+                      <p>{task.end.toLocaleString()}</p>
+                    </div>
+                  </li>)}
+              </For>
+            </ol>
           </div>
         </div>
       </div>

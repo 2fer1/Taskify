@@ -83,7 +83,6 @@ html{
 }
 
 .add-button{
-  margin-top: auto;
   font-size: 18px;
   padding: 0.6vh 0.6vw;
   align-self: flex-end;
