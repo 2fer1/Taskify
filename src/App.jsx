@@ -58,6 +58,10 @@ function App() {
               <For each={taskStore.completed}>
                 {(task) => 
                   (<li class="task-item">
+                    <select name="move" id="move">
+                      <option value="inProgress">In Progress</option>
+                      <option value="upcoming">Upcoming</option>
+                    </select>
                     <h3>{task.title}</h3>
                     <p>{task.description}</p>
                     <div>

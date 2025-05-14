@@ -36,6 +36,8 @@ html{
 
 .completed-column{
   flex-grow: 1;
+  flex: 1 1 0px;
+  width: 0;
 }
 
 .completed-title{
@@ -52,6 +54,8 @@ html{
 
 .progress-column{
   flex-grow: 1;
+  flex: 1 1 0px;
+  width: 0;
   background-color: #e3e7e9e3;
 }
 
@@ -68,6 +72,8 @@ html{
 
 .upcoming-column{
   flex-grow: 1;
+  flex: 1 1 0px;
+  width: 0;
 }
 
 .upcoming-title{
@@ -154,5 +160,6 @@ html{
 
 .task-item{
   background-color: rgb(255, 255, 238);
-  padding: 0.2vh 1vw;
+  padding: 1vh 1vw;
+  margin: 1vh 0vw;
 }
