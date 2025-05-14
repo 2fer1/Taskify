@@ -153,6 +153,6 @@ html{
 }
 
 .task-item{
-  background-color: #28FF28;
-  
+  background-color: rgb(255, 255, 238);
+  padding: 0.2vh 1vw;
 }
