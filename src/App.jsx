@@ -4,12 +4,15 @@ import "./App.css";
 import { Portal } from "solid-js/web";
 import Task from "./Classes/task";
 import { createStore } from "solid-js/store";
+import { Dynamic } from "solid-js/web";
 
 function App() {
   const [showPopUp, setShow] = createSignal(false);
+  const [showTask, setTaskShow] = createSignal(false);
   const [greetMsg, setGreetMsg] = createSignal("");
   const [name, setName] = createSignal("");
-  const [chosenColumn, setColumn] = createSignal("")
+  const [chosenColumn, setColumn] = createSignal("");
+  const [taskName, setTaskName] = createSignal("");
 
   const [taskStore, setStore] = createStore(
     {
@@ -24,6 +27,12 @@ function App() {
   let end;
   let description;
   let importance;
+
+  function clickDiv(taskShow){
+    console.log("Div was clicked!");
+    setTaskShow((prev) => !prev);
+    setTaskName(taskShow);
+  }
 
   function changeColumn(column){
     setColumn(column);
@@ -57,15 +66,11 @@ function App() {
             <ol class="task-container">
               <For each={taskStore.completed}>
                 {(task) => 
-                  (<li class="task-item">
-                    <select name="move" id="move">
-                      <option value="inProgress">In Progress</option>
-                      <option value="upcoming">Upcoming</option>
-                    </select>
+                  (<li onClick={() => clickDiv(task.title)} class="task-item">
                     <h3>{task.title}</h3>
-                    <p>{task.description}</p>
-                    <div>
+                    <div class="task-date">
                       <p>{task.start.toLocaleString()}</p>
+                      <p>to</p>
                       <p>{task.end.toLocaleString()}</p>
                     </div>
                   </li>)}
@@ -118,6 +123,15 @@ function App() {
           </div>
         </div>
       </div>
+
+      <Portal>
+        <Show when={showTask()}>
+          <div>
+            <h2>Balls</h2>
+            <Dynamic component={taskStore}></Dynamic>
+          </div>
+        </Show>
+      </Portal>
 
       <Portal>
         <Show when={showPopUp()}>
