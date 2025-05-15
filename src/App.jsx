@@ -5,6 +5,7 @@ import { Portal } from "solid-js/web";
 import Task from "./Classes/task";
 import { createStore } from "solid-js/store";
 import { Dynamic } from "solid-js/web";
+import { createUniqueId } from "solid-js";
 
 function App() {
   const [showPopUp, setShow] = createSignal(false);
@@ -12,15 +13,15 @@ function App() {
   const [greetMsg, setGreetMsg] = createSignal("");
   const [name, setName] = createSignal("");
   const [chosenColumn, setColumn] = createSignal("");
-  const [taskName, setTaskName] = createSignal("");
+  const [taskColumn, setTaskColumn] = createSignal("");
 
   const [taskStore, setStore] = createStore(
     {
-      completed: [],
-      inProgress: [],
-      upcoming: []
+
     }
   )
+
+  const id = createUniqueId();
 
   let title;
   let start;
@@ -31,7 +32,7 @@ function App() {
   function clickDiv(taskShow){
     console.log("Div was clicked!");
     setTaskShow((prev) => !prev);
-    setTaskName(taskShow);
+    setTaskColumn(taskShow);
   }
 
   function changeColumn(column){
@@ -40,8 +41,9 @@ function App() {
   }
 
   function createTask(){
-    const task = new Task(title.value, start.value, end.value, description.value, importance.value);
-    setStore(chosenColumn(), taskStore[chosenColumn()].length, task);
+    let curId = createUniqueId();
+    const task = new Task(curId, chosenColumn(), title.value, start.value, end.value, description.value, importance.value);
+    setStore(curId, task);
     setShow((prev) => !prev);
   }
 
@@ -64,9 +66,9 @@ function App() {
             <button class="add-button" onClick={() => changeColumn("completed")}>+</button>
             
             <ol class="task-container">
-              <For each={taskStore.completed}>
+              <For each={Object.values(taskStore).filter((task) => task.type == "completed")}>
                 {(task) => 
-                  (<li onClick={() => clickDiv(task.title)} class="task-item">
+                  (<li onClick={() => clickDiv("completed")} class="task-item">
                     <h3>{task.title}</h3>
                     <div class="task-date">
                       <p>{task.start.toLocaleString()}</p>
@@ -128,7 +130,7 @@ function App() {
         <Show when={showTask()}>
           <div>
             <h2>Balls</h2>
-            <Dynamic component={taskStore}></Dynamic>
+            <Dynamic component={taskStore[taskColumn()]}></Dynamic>
           </div>
         </Show>
       </Portal>

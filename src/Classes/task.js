@@ -1,16 +1,24 @@
 class Task{
+    #id;
+    #type;
     #title;
     #start;
     #end;
     #description;
     #importance;
 
-    constructor(title, start, end, description, importance){
+    constructor(id, type, title, start, end, description, importance){
+        this.id = id;
+        this.type = type;
         this.#title = title;
         this.#start = new Date(start);
         this.#end = new Date(end);
         this.#description = description;
         this.#importance = importance;
+    }
+
+    get Id(){
+        return this.#id;
     }
 
     get start(){
