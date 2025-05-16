@@ -174,3 +174,22 @@ html{
   font-size: 14px;
   margin: 0.5vh;
 }
+
+.close-button{
+  background: none;
+  margin-left: auto;
+  margin-top: -3vh;
+  margin-right: -2vw;
+  width: fit-content;
+  border: none;
+  font-size: 18px;
+  padding: 5px 10px;
+}
+
+.close-button:hover{
+  background-color: red;
+}
+
+.task-description{
+  overflow-wrap: break-word;
+}

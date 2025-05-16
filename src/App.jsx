@@ -11,15 +11,10 @@ function App() {
   const [showPopUp, setShow] = createSignal(false);
   const [showTask, setTaskShow] = createSignal(false);
   const [greetMsg, setGreetMsg] = createSignal("");
-  const [name, setName] = createSignal("");
   const [chosenColumn, setColumn] = createSignal("");
   const [taskId, setTaskId] = createSignal("");
 
-  const [taskStore, setStore] = createStore(
-    {
-
-    }
-  )
+  const [taskStore, setStore] = createStore({})
 
   const id = createUniqueId();
 
@@ -32,8 +27,13 @@ function App() {
   function TaskInfo({task}){
     return(
       <div class="popup-body">
+        <button class="close-button" onClick={() => setTaskShow((prev) => !prev)}>⨉</button>
         <h2>{task.title}</h2>
-        <p>{task.description}</p>
+        <div>
+          <p>From: {task.start.toLocaleString()}</p>
+          <p>To: {task.end.toLocaleString()}</p>
+        </div>
+        <p class="task-description">{task.description}</p>
       </div>
     )
   }
