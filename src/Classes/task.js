@@ -8,8 +8,8 @@ class Task{
     #importance;
 
     constructor(id, type, title, start, end, description, importance){
-        this.id = id;
-        this.type = type;
+        this.#id = id;
+        this.#type = type;
         this.#title = title;
         this.#start = new Date(start);
         this.#end = new Date(end);
@@ -17,8 +17,12 @@ class Task{
         this.#importance = importance;
     }
 
-    get Id(){
+    get id(){
         return this.#id;
+    }
+
+    get type(){
+        return this.#type;
     }
 
     get start(){
