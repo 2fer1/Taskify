@@ -163,6 +163,11 @@ html{
   padding: 1vh 1vw;
   margin: 1vh 0vw;
   overflow: hidden;
+  box-shadow: 2px 2px rgba(0, 0, 0, 0.4);
+}
+
+.task-item > h3{
+  overflow-wrap: break-word;
 }
 
 .task-date{

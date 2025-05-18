@@ -38,6 +38,10 @@ function App() {
     )
   }
 
+  function deleteTask(){
+    
+  }
+
   function clickDiv(taskId){
     console.log("Div was clicked!");
     setTaskId(taskId);
@@ -84,6 +88,7 @@ function App() {
                       <p>to</p>
                       <p>{task.end.toLocaleString()}</p>
                     </div>
+                    <button>Delete</button>
                   </li>)}
               </For>
             </ol>
