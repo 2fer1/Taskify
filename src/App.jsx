@@ -38,8 +38,9 @@ function App() {
     )
   }
 
-  function deleteTask(){
-    
+  function deleteTask(taskId){
+    setTaskId(taskId);
+    setStore(taskId, undefined);
   }
 
   function clickDiv(taskId){
@@ -81,14 +82,18 @@ function App() {
             <ol class="task-container">
               <For each={Object.values(taskStore).filter((task) => task.type == "completed")}>
                 {(task) => 
-                  (<li onClick={() => clickDiv(task.id)} class="task-item">
-                    <h3>{task.title}</h3>
-                    <div class="task-date">
-                      <p>{task.start.toLocaleString()}</p>
-                      <p>to</p>
-                      <p>{task.end.toLocaleString()}</p>
+                  (<li>
+                    <div class="task-body">
+                      <div  onClick={() => clickDiv(task.id)}>
+                        <h3>{task.title}</h3>
+                        <div class="task-date">
+                          <p>{task.start.toLocaleString()}</p>
+                          <p>to</p>
+                          <p>{task.end.toLocaleString()}</p>
+                        </div>
+                      </div>
+                      <button class="delete-button" onClick={() => deleteTask(task.id)}>🗑</button>
                     </div>
-                    <button>Delete</button>
                   </li>)}
               </For>
             </ol>
@@ -104,12 +109,17 @@ function App() {
             <ol class="task-container">
                <For each={Object.values(taskStore).filter((task) => task.type == "inProgress")}>
                 {(task) => 
-                  (<li onClick={() => clickDiv(task.id)} class="task-item">
-                    <h3>{task.title}</h3>
-                    <div class="task-date">
-                      <p>{task.start.toLocaleString()}</p>
-                      <p>to</p>
-                      <p>{task.end.toLocaleString()}</p>
+                  (<li>
+                    <div class="task-body">
+                      <div  onClick={() => clickDiv(task.id)}>
+                        <h3>{task.title}</h3>
+                        <div class="task-date">
+                          <p>{task.start.toLocaleString()}</p>
+                          <p>to</p>
+                          <p>{task.end.toLocaleString()}</p>
+                        </div>
+                      </div>
+                      <button class="delete-button" onClick={() => deleteTask(task.id)}>🗑</button>
                     </div>
                   </li>)}
               </For>
@@ -126,12 +136,17 @@ function App() {
             <ol class="task-container">
                <For each={Object.values(taskStore).filter((task) => task.type == "upcoming")}>
                 {(task) => 
-                  (<li onClick={() => clickDiv(task.id)} class="task-item">
-                    <h3>{task.title}</h3>
-                    <div class="task-date">
-                      <p>{task.start.toLocaleString()}</p>
-                      <p>to</p>
-                      <p>{task.end.toLocaleString()}</p>
+                  (<li>
+                    <div class="task-body">
+                      <div  onClick={() => clickDiv(task.id)}>
+                        <h3>{task.title}</h3>
+                        <div class="task-date">
+                          <p>{task.start.toLocaleString()}</p>
+                          <p>to</p>
+                          <p>{task.end.toLocaleString()}</p>
+                        </div>
+                      </div>
+                      <button class="delete-button" onClick={() => deleteTask(task.id)}>🗑</button>
                     </div>
                   </li>)}
               </For>

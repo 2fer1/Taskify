@@ -158,7 +158,7 @@ html{
   padding: 0px;
 }
 
-.task-item{
+.task-body{
   background-color: rgb(255, 255, 238);
   padding: 1vh 1vw;
   margin: 1vh 0vw;
@@ -166,7 +166,7 @@ html{
   box-shadow: 2px 2px rgba(0, 0, 0, 0.4);
 }
 
-.task-item > h3{
+.task-body > h3{
   overflow-wrap: break-word;
 }
 
@@ -178,6 +178,12 @@ html{
 .task-date > p{
   font-size: 14px;
   margin: 0.5vh;
+}
+
+.delete-button{
+  background: none;
+  border: none;
+  font-size: 30px;
 }
 
 .close-button{
