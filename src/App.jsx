@@ -6,6 +6,7 @@ import Task from "./Classes/task";
 import { createStore } from "solid-js/store";
 import { Dynamic } from "solid-js/web";
 import { createUniqueId } from "solid-js";
+import { dataDir } from "@tauri-apps/api/path";
 
 function App() {
   const [showPopUp, setShow] = createSignal(false);
@@ -174,11 +175,11 @@ function App() {
               </div>
               <div>
                 <label for="start">Start Date/Time: </label>
-                <input type="datetime-local" name="start" id="start" ref={start} />
+                <input type="datetime-local" name="start" id="start" value={"2025-05-20T08:30"} ref={start} />
               </div>
               <div>
                 <label for="end-date">End Date/Time: </label>
-                <input type="datetime-local" name="end" id="end" ref={end}/>
+                <input type="datetime-local" name="end" id="end" value={"2025-05-20T08:30"} ref={end}/>
               </div>
               <div class="description-field">
                 <label for="description">Description: </label>
