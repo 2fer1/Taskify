@@ -120,6 +120,8 @@ html{
 .popup-body > h2{
   font-size: 22px;
   align-self: center;
+  overflow-wrap: break-word;
+  max-width: 50vw;
 }
 
 .button-container{
@@ -166,7 +168,7 @@ html{
   box-shadow: 2px 2px rgba(0, 0, 0, 0.4);
 }
 
-.task-body > h3{
+.task-title{
   overflow-wrap: break-word;
 }
 

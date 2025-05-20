@@ -86,7 +86,7 @@ function App() {
                   (<li>
                     <div class="task-body">
                       <div  onClick={() => clickDiv(task.id)}>
-                        <h3>{task.title}</h3>
+                        <h3 class="task-title">{task.title}</h3>
                         <div class="task-date">
                           <p>{task.start.toLocaleString()}</p>
                           <p>to</p>
@@ -113,7 +113,7 @@ function App() {
                   (<li>
                     <div class="task-body">
                       <div  onClick={() => clickDiv(task.id)}>
-                        <h3>{task.title}</h3>
+                        <h3 class="task-title">{task.title}</h3>
                         <div class="task-date">
                           <p>{task.start.toLocaleString()}</p>
                           <p>to</p>
@@ -140,7 +140,7 @@ function App() {
                   (<li>
                     <div class="task-body">
                       <div  onClick={() => clickDiv(task.id)}>
-                        <h3>{task.title}</h3>
+                        <h3 class="task-title">{task.title}</h3>
                         <div class="task-date">
                           <p>{task.start.toLocaleString()}</p>
                           <p>to</p>
@@ -171,7 +171,7 @@ function App() {
               <h2>Create Task</h2>
               <div>
                 <label for="title">Title: </label>
-                <input type="text" id="title" name="title" ref={title}></input>
+                <input type="text" id="title" name="title" maxLength="75" ref={title}></input>
               </div>
               <div>
                 <label for="start">Start Date/Time: </label>
