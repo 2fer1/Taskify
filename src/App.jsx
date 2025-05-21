@@ -7,6 +7,13 @@ import { createStore } from "solid-js/store";
 import { Dynamic } from "solid-js/web";
 import { createUniqueId } from "solid-js";
 import { dataDir } from "@tauri-apps/api/path";
+import {
+  DragDropProvider,
+  DragDropSensors,
+  createDraggable,
+  createDroppable,
+} from "@thisbeyond/solid-dnd";
+
 
 function App() {
   const [showPopUp, setShow] = createSignal(false);
@@ -60,11 +67,6 @@ function App() {
     const task = new Task(curId, chosenColumn(), title.value, start.value, end.value, description.value, importance.value);
     setStore(curId, task);
     setShow((prev) => !prev);
-  }
-
-  async function greet() {
-    // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-    setGreetMsg(await invoke("greet", { name: name() }));
   }
 
   return (
