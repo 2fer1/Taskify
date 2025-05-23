@@ -12,13 +12,19 @@ import {
   DragDropSensors,
   createDraggable,
   createDroppable,
+  transformStyle,
 } from "@thisbeyond/solid-dnd";
 
 function Draggable(){
   const draggable = createDraggable(1);
   return (
-    <div use:draggable class="draggable">
-      Draggable
+    <div
+      ref={draggable.ref}
+      style={transformStyle(draggable.transform)}
+      class="draggable"
+    >
+      <div>Draggable</div>
+      <div {...draggable.dragActivators}>+</div>
     </div>
   );
 }
@@ -26,9 +32,8 @@ function Draggable(){
 function Droppable(props){
   const droppable = createDroppable(1);
   return(
-    <div use:droppable class="droppable">
+    <div ref={droppable.ref} class="droppable">
       Droppable.
-      {props.children}
     </div>
   );
 }
@@ -51,11 +56,13 @@ function App() {
   let description;
   let importance;
 
-  const onDragEnd = ({droppable}) => {
-    if (droppable){
-      setWhere("inside");
+  let ref;
+
+  const onDragEnd = ({draggable, droppable}) => {
+    if (droppable) {
+      droppable.node.append(draggable.node);
     } else {
-      setWhere("outside");
+      ref.append(draggable.node);
     }
   }
 
@@ -102,16 +109,10 @@ function App() {
         <p>Taskify</p>
         <DragDropProvider onDragEnd={onDragEnd}>
           <DragDropSensors/>
-          <div>
-            <Show when={where() == "outside"}>
-              <Draggable/>
-            </Show>
+          <div ref={ref}>
+            <Draggable/>
           </div>
-          <Droppable>
-            <Show when={where() == "inside"}>
-              <Draggable/>
-            </Show>
-          </Droppable>
+          <Droppable/>
         </DragDropProvider>
       </div>
       <div class="category-columns">
