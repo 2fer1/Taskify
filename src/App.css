@@ -207,3 +207,15 @@ html{
 .task-description{
   overflow-wrap: break-word;
 }
+
+.draggable{
+  background-color: blue;
+  color: white;
+  padding: 10px 10px;
+  border-radius: 15px;
+}
+
+.droppable{
+  background-color: rgb(184, 184, 184);
+  padding: 20px 20px;
+}

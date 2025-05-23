@@ -14,6 +14,24 @@ import {
   createDroppable,
 } from "@thisbeyond/solid-dnd";
 
+function Draggable(){
+  const draggable = createDraggable(1);
+  return (
+    <div use:draggable class="draggable">
+      Draggable
+    </div>
+  );
+}
+
+function Droppable(props){
+  const droppable = createDroppable(1);
+  return(
+    <div use:droppable class="droppable">
+      Droppable.
+      {props.children}
+    </div>
+  );
+}
 
 function App() {
   const [showPopUp, setShow] = createSignal(false);
@@ -21,8 +39,9 @@ function App() {
   const [greetMsg, setGreetMsg] = createSignal("");
   const [chosenColumn, setColumn] = createSignal("");
   const [taskId, setTaskId] = createSignal("");
+  const [where, setWhere] = createSignal("outside");
 
-  const [taskStore, setStore] = createStore({})
+  const [taskStore, setStore] = createStore({});
 
   const id = createUniqueId();
 
@@ -31,6 +50,14 @@ function App() {
   let end;
   let description;
   let importance;
+
+  const onDragEnd = ({droppable}) => {
+    if (droppable){
+      setWhere("inside");
+    } else {
+      setWhere("outside");
+    }
+  }
 
   function TaskInfo({task}){
     return(
@@ -73,6 +100,19 @@ function App() {
     <main>
       <div class="top-row">
         <p>Taskify</p>
+        <DragDropProvider onDragEnd={onDragEnd}>
+          <DragDropSensors/>
+          <div>
+            <Show when={where() == "outside"}>
+              <Draggable/>
+            </Show>
+          </div>
+          <Droppable>
+            <Show when={where() == "inside"}>
+              <Draggable/>
+            </Show>
+          </Droppable>
+        </DragDropProvider>
       </div>
       <div class="category-columns">
         <div class="completed-column">
@@ -81,7 +121,6 @@ function App() {
           </div>
           <div class="column-body completed-body">
             <button class="add-button" onClick={() => changeColumn("completed")}>+</button>
-            
             <ol class="task-container">
               <For each={Object.values(taskStore).filter((task) => task.type == "completed")}>
                 {(task) => 
