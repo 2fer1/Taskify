@@ -208,15 +208,36 @@ html{
   overflow-wrap: break-word;
 }
 
-.draggable{
+.sortable{
   background-color: blue;
   color: white;
   padding: 10px 10px;
   border-radius: 15px;
-  display: flex;
+  text-align: center;
 }
 
-.droppable{
-  background-color: rgb(184, 184, 184);
-  padding: 20px 20px;
+.opacity-25{
+  background-color: rgba(0, 0, 255, 0.25);
+}
+
+.transition-transform{
+  background-color: #28FF28;
+}
+
+.column{
+  border: 2px solid red;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.columns{
+  width: 70px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.self-stretch{
+  width: 100px;
+  height: 200px;
 }

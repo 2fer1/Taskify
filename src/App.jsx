@@ -7,35 +7,45 @@ import { createStore } from "solid-js/store";
 import { Dynamic } from "solid-js/web";
 import { createUniqueId } from "solid-js";
 import { dataDir } from "@tauri-apps/api/path";
+import {For} from "solid-js";
+import { batch } from "solid-js";
 import {
   DragDropProvider,
   DragDropSensors,
-  createDraggable,
+  DragOverlay,
+  SortableProvider,
+  createSortable,
   createDroppable,
+  closestCenter,
   transformStyle,
 } from "@thisbeyond/solid-dnd";
+import { useDragDropContext } from "@thisbeyond/solid-dnd";
+// import { closestCenter } from "@thisbeyond/solid-dnd";
 
-function Draggable(){
-  const draggable = createDraggable(1);
+function Sortable(props){
+  const sortable = createSortable(props.item);
   return (
     <div
-      ref={draggable.ref}
-      style={transformStyle(draggable.transform)}
-      class="draggable"
+      use:sortable
+      class="sortable"
+      classList={{
+        "opacity-25": sortable.isActiveDraggable,
+      }}
     >
-      <div>Draggable</div>
-      <div {...draggable.dragActivators}>+</div>
+      {props.item}
     </div>
   );
 }
 
-function Droppable(props){
-  const droppable = createDroppable(1);
+function Column(props){
+  const droppable = createDroppable(props.id);
   return(
-    <div ref={droppable.ref} class="droppable">
-      Droppable.
+    <div use:droppable class="column">
+      <SortableProvider ids={props.items}>
+        <For each={props.items}>{(item) => <Sortable item={item}/>}</For>
+      </SortableProvider>
     </div>
-  );
+  )
 }
 
 function App() {
@@ -44,11 +54,10 @@ function App() {
   const [greetMsg, setGreetMsg] = createSignal("");
   const [chosenColumn, setColumn] = createSignal("");
   const [taskId, setTaskId] = createSignal("");
-  const [where, setWhere] = createSignal("outside");
 
   const [taskStore, setStore] = createStore({});
 
-  const id = createUniqueId();
+  //const id = createUniqueId();
 
   let title;
   let start;
@@ -56,15 +65,96 @@ function App() {
   let description;
   let importance;
 
-  let ref;
+  const [containers, setContainers] = createStore({
+    A: [1, 2, 3],
+    B: [4, 5, 6],
+  });
 
-  const onDragEnd = ({draggable, droppable}) => {
-    if (droppable) {
-      droppable.node.append(draggable.node);
-    } else {
-      ref.append(draggable.node);
+  const containerIds = () => Object.keys(containers);
+  const isContainer = (id) => containerIds().includes(id);
+
+  function getContainer(id){
+    for (const [key, items] of Object.entries(containers)){
+      if (items.includes(id)){
+        return key;
+      }
     }
-  }
+  };
+
+  function closestContainerOrItem(draggable, droppables, context){
+    const closestContainer = closestCenter(
+      draggable,
+      droppables.filter((droppable) => isContainer(droppable.id)),
+      context
+    );
+    if (closestContainer) {
+      const containerItemIds = containers[closestContainer.id];
+      const closestItem = closestCenter(
+        draggable,
+        droppables.filter((droppable) =>
+          containerItemIds.includes(droppable.id)
+        ),
+        context
+      );
+      if (!closestItem) {
+        return closestContainer;
+      }
+
+      if (getContainer(draggable.id) != closestContainer.id){
+        const isLastItem =
+          containerItemIds.indexOf(closestItem.id) == containerItemIds.length -1;
+
+        if (isLastItem) {
+          const belowLastItem =
+            draggable.transformed.center.y > closestItem.transformed.center.y;
+          
+          if (belowLastItem) {
+            return closestContainer;
+          }
+        }
+      }
+      return closestItem;
+    }
+  };
+
+  function move(draggable, droppable, onlyWhenChangingContainer = true){
+    const draggableContainer = getContainer(draggable.id);
+    const droppableContainer = isContainer(droppable.id)
+      ? droppable.id
+      : getContainer(droppable.id);
+    
+    if (
+      draggableContainer != droppableContainer ||
+      !onlyWhenChangingContainer
+    ){
+      const containerItemIds = containers[droppableContainer];
+      let index = containerItemIds.indexOf(droppable.id);
+      if (index == -1) index = containerItemIds.length;
+
+      batch(() => {
+        setContainers(draggableContainer, (items) => 
+          items.filter((item) => item != draggable.id)
+        );
+        setContainers(droppableContainer, (items) => [
+          ...items.slice(0, index),
+          draggable.id,
+          ...items.slice(index),
+        ]);
+      });
+    }
+  };
+
+  function onDragOver({draggable, droppable}){
+    if (draggable && droppable){
+      move(draggable, droppable);
+    }
+  };
+
+  function onDragEnd(draggable, droppable){
+    if (draggable && droppable){
+      move(draggable, droppable, false);
+    }
+  };
 
   function TaskInfo({task}){
     return(
@@ -105,14 +195,22 @@ function App() {
 
   return (
     <main>
-      <div class="top-row">
+      <div class="top-row self-stretch">
         <p>Taskify</p>
-        <DragDropProvider onDragEnd={onDragEnd}>
+        <DragDropProvider
+          onDragOver={onDragOver}
+          onDragEnd={onDragEnd}
+          collisionDetector={closestContainerOrItem}
+        >
           <DragDropSensors/>
-          <div ref={ref}>
-            <Draggable/>
+          <div class="columns">
+            <For each={containerIds()}>
+              {(key) => <Column id={key} items={containers[key]}/>}
+            </For>
           </div>
-          <Droppable/>
+          <DragOverlay>
+            {(draggable) => <div class="sortable">{draggable.id}</div>}
+          </DragOverlay>
         </DragDropProvider>
       </div>
       <div class="category-columns">
