@@ -103,7 +103,7 @@ html{
 }
 
 .popup-body {
-  background-color: #e3e7e9e3;
+  background-color: #e3e7e9;
   display: flex;
   flex-direction: column;
   gap: 1vh;
@@ -119,7 +119,7 @@ html{
 
 .popup-body > h2{
   font-size: 22px;
-  align-self: center;
+  text-align: center;
   overflow-wrap: break-word;
   max-width: 50vw;
   min-width: 450px;
@@ -186,6 +186,7 @@ html{
 .delete-button{
   background: none;
   border: none;
+  box-shadow: 2px 2px ;
   font-size: 30px;
 }
 
@@ -206,38 +207,4 @@ html{
 
 .task-description{
   overflow-wrap: break-word;
-}
-
-.sortable{
-  background-color: blue;
-  color: white;
-  padding: 10px 10px;
-  border-radius: 15px;
-  text-align: center;
-}
-
-.opacity-25{
-  background-color: rgba(0, 0, 255, 0.25);
-}
-
-.transition-transform{
-  background-color: #28FF28;
-}
-
-.column{
-  border: 2px solid red;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-}
-
-.columns{
-  width: 70px;
-  display: flex;
-  justify-content: space-around;
-}
-
-.self-stretch{
-  width: 100px;
-  height: 200px;
 }
