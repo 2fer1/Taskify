@@ -77,7 +77,7 @@ function Group(props){
   );
 }
 
-function groupOverlay(props){
+function GroupOverlay(props){
   return(
     <div>
       <div>{props.name}</div>
@@ -225,7 +225,67 @@ function App() {
       ? droppable.id
       : droppable.data.group;
     
-    //Continue Testing Here
+    if (
+      onlyWhenChangingGroup &&
+      (draggableIsGroup || draggableGroupId == droppableGroupId)
+    ) {
+      return;
+    }
+
+    let ids, orders, order;
+
+    if (draggableIsGroup){
+      ids = groupIds();
+      orders = groupOrders();
+    } else {
+      ids = groupItemIds(droppableGroupId);
+      orders = groupItemOrders(droppableGroupId)
+    }
+
+    if (droppableIsGroup && !draggableIsGroup) {
+      order = new Big(orders.at(-1) ?? -ORDER_DELTA).plus(ORDER_DELTA).round();
+    } else {
+      const draggableIndex = ids.indexOf(draggable.id);
+      const droppableIndex = ids.indexOf(droppable.id);
+      if (draggableIndex != droppableIndex){
+        let orderAfter, orderBefore;
+        if (draggableIndex == -1 || draggableIndex > droppableIndex){
+          orderBefore = new Big(orders[droppableIndex]);
+          orderAfter = new Big(
+            orders[droppableIndex - 1] ?? orderBefore.minus(ORDER_DELTA * 2)
+          );
+        } else {
+          orderAfter = new Big(orders[droppableIndex]);
+          orderBefore = new Big(
+            orders[droppableIndex + 1] ?? orderAfter.plus(ORDER_DELTA * 2)
+          );
+        }
+
+        if (orderAfter != undefined && orderBefore != undefined){
+          order = orderAfter.plus(orderBefore).div(2.0);
+          const rounded = order.round();
+          if (rounded.gt(orderAfter) && rounded.lt(orderBefore)){
+            order = rounded;
+          }
+        }
+      }
+    }
+
+    if (order != undefined){
+      setEntities(draggable.id, (entity) => ({
+        ...entity,
+        order: order.toString(),
+        group: droppableGroupId,
+      }));
+    }
+  };
+
+  function onDragOver({draggable, droppable}){
+    move(draggable, droppable);
+  }
+
+  function onDragEnd({draggable, droppable}){
+    move(draggable, droppable, false);
   }
 
   function TaskInfo({task}){
@@ -269,7 +329,38 @@ function App() {
     <main>
       <div class="top-row self-stretch">
         <p>Taskify</p>
-
+        <div>
+          <DragDropProvider
+            onDragOver={onDragOver}
+            onDragEnd={onDragEnd}
+            collisionDetector={closestEntity}
+          >
+            <DragDropSensors/>
+            <div class="columns">
+              <SortableProvider ids={groupIds()}>
+                <For each={groups()}>
+                  {(group) => (
+                    <Group
+                      id={group.id}
+                      name={group.name}
+                      items={groupItems(group.id)}
+                    />
+                  )}
+                </For>
+              </SortableProvider>
+            </div>
+            <DragOverlay>
+              {(draggable) => {
+                const entity = entities[draggable.id];
+                return isSortableGroup(draggable) ? (
+                  <GroupOverlay name={entity.name} items={groupItems(entity.id)}/>
+                ) : (
+                  <ItemOverlay name={entity.name}/>
+                );
+              }}
+            </DragOverlay>
+          </DragDropProvider>
+        </div>
       </div>
       <div class="category-columns">
         <div class="completed-column">

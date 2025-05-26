@@ -17,6 +17,9 @@ importers:
       '@thisbeyond/solid-dnd':
         specifier: ^0.7.5
         version: 0.7.5(solid-js@1.9.5)
+      big.js:
+        specifier: ^7.0.1
+        version: 7.0.1
       solid-js:
         specifier: ^1.9.3
         version: 1.9.5
@@ -489,6 +492,9 @@ packages:
     resolution: {integrity: sha512-85I3osODJ1LvZbv8wFozROV1vXq32BubqHXAGu73A//TRs3NLI1OFP83AQBUTSQHwgZQmARjHlJciym3we+V+w==}
     peerDependencies:
       '@babel/core': ^7.0.0
+
+  big.js@7.0.1:
+    resolution: {integrity: sha512-iFgV784tD8kq4ccF1xtNMZnXeZzVuXWWM+ERFzKQjv+A5G9HC8CY3DuV45vgzFFcW+u2tIvmF95+AzWgs6BjCg==}
 
   browserslist@4.24.4:
     resolution: {integrity: sha512-KDi1Ny1gSePi1vm0q4oxSF8b4DR44GF4BbmS2YdhPLOEqd8pDviZOGH/GsmRwoWJ2+5Lr085X7naowMwKHDG1A==}
@@ -1069,6 +1075,8 @@ snapshots:
     dependencies:
       '@babel/core': 7.26.10
       babel-plugin-jsx-dom-expressions: 0.39.8(@babel/core@7.26.10)
+
+  big.js@7.0.1: {}
 
   browserslist@4.24.4:
     dependencies:
