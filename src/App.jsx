@@ -43,13 +43,27 @@ function App() {
     )
   }
 
+  function TaskItem({task}){
+
+    return(
+    <div class="task-body">
+      <div onClick={() => clickDiv(task.id)}>
+        <h3 class="task-title">{task.title}</h3>
+        <div class="task-date">
+          <p>{task.printedStartShort} - {task.printedEndShort}</p>
+        </div>
+      </div>
+      <button class="delete-button" onClick={() => deleteTask(task.id)}><img src={trashIcon}></img></button>
+    </div>
+    )
+  }
+
   function deleteTask(taskId){
-    setTaskId(taskId);
+    setTaskId(taskId - 1);
     setStore(taskId, undefined);
   }
 
   function clickDiv(taskId){
-    console.log("Div was clicked!");
     setTaskId(taskId);
     setTaskShow((prev) => !prev);
   }
@@ -62,6 +76,9 @@ function App() {
   function createTask(){
     let curId = createUniqueId();
     const task = new Task(curId, chosenColumn(), title.value, start.value, end.value, description.value, importance.value);
+
+    title = start = end = description = importance = undefined;
+
     setStore(curId, task);
     setShow((prev) => !prev);
   }
@@ -80,18 +97,13 @@ function App() {
             <button class="add-button" onClick={() => changeColumn("completed")}>+</button>
             <ol class="task-container">
               <For each={Object.values(taskStore).filter((task) => task.type == "completed")}>
-                {(task) => 
-                  (<li>
-                    <div class="task-body">
-                      <div  onClick={() => clickDiv(task.id)}>
-                        <h3 class="task-title">{task.title}</h3>
-                        <div class="task-date">
-                          <p>{task.printedStartShort} - {task.printedEndShort}</p>
-                        </div>
-                      </div>
-                      <button class="delete-button" onClick={() => deleteTask(task.id)}><img src={trashIcon}></img></button>
-                    </div>
-                  </li>)}
+                {(task) => (
+                  <For each={(task) => task.importance == 2}>
+                    {(task) => (
+                      <TaskItem task={task}/>
+                    )}
+                  </For>
+                )}
               </For>
             </ol>
           </div>
@@ -105,20 +117,9 @@ function App() {
 
             <ol class="task-container">
                <For each={Object.values(taskStore).filter((task) => task.type == "inProgress")}>
-                {(task) => 
-                  (<li>
-                    <div class="task-body">
-                      <div  onClick={() => clickDiv(task.id)}>
-                        <h3 class="task-title">{task.title}</h3>
-                        <div class="task-date">
-                          <p>{task.printedStartShort}</p>
-                          <p>to</p>
-                          <p>{task.printedEndShort}</p>
-                        </div>
-                      </div>
-                      <button class="delete-button" onClick={() => deleteTask(task.id)}>🗑</button>
-                    </div>
-                  </li>)}
+                {(task) => (
+                  <TaskItem task={task}/>
+                )}
               </For>
             </ol>
           </div>
@@ -132,20 +133,9 @@ function App() {
 
             <ol class="task-container">
                <For each={Object.values(taskStore).filter((task) => task.type == "upcoming")}>
-                {(task) => 
-                  (<li>
-                    <div class="task-body">
-                      <div  onClick={() => clickDiv(task.id)}>
-                        <h3 class="task-title">{task.title}</h3>
-                        <div class="task-date">
-                          <p>{task.start.toLocaleString()}</p>
-                          <p>to</p>
-                          <p>{task.end.toLocaleString()}</p>
-                        </div>
-                      </div>
-                      <button class="delete-button" onClick={() => deleteTask(task.id)}>🗑</button>
-                    </div>
-                  </li>)}
+                {(task) => (
+                  <TaskItem task={task}/>
+                )}
               </For>
             </ol>
           </div>
