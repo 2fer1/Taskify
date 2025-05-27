@@ -8,7 +8,7 @@ import { Dynamic } from "solid-js/web";
 import { createUniqueId } from "solid-js";
 import { dataDir } from "@tauri-apps/api/path";
 import {For} from "solid-js";
-
+import trashIcon from "./assets/trash-solid.svg";
 
 
 
@@ -86,10 +86,10 @@ function App() {
                       <div  onClick={() => clickDiv(task.id)}>
                         <h3 class="task-title">{task.title}</h3>
                         <div class="task-date">
-                          <p>{task.start.toLocaleString()} - {task.end.toLocaleString()}</p>
+                          <p>{task.printedStartShort} - {task.printedEndShort}</p>
                         </div>
                       </div>
-                      <button class="delete-button" onClick={() => deleteTask(task.id)}>🗑</button>
+                      <button class="delete-button" onClick={() => deleteTask(task.id)}><img src={trashIcon}></img></button>
                     </div>
                   </li>)}
               </For>
@@ -111,9 +111,9 @@ function App() {
                       <div  onClick={() => clickDiv(task.id)}>
                         <h3 class="task-title">{task.title}</h3>
                         <div class="task-date">
-                          <p>{task.start.toLocaleString()}</p>
+                          <p>{task.printedStartShort}</p>
                           <p>to</p>
-                          <p>{task.end.toLocaleString()}</p>
+                          <p>{task.printedEndShort}</p>
                         </div>
                       </div>
                       <button class="delete-button" onClick={() => deleteTask(task.id)}>🗑</button>

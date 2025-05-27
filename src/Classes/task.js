@@ -53,6 +53,11 @@ class Task{
         let minutes = this.#start.getMinutes();
         let suffix = "AM";
 
+        if (minutes < 10){
+            minutes = "0" + minutes;
+        }
+
+
         if (hour == 0 || hour == 12){
             hour = hour + 12;
         }
@@ -65,13 +70,17 @@ class Task{
         return month + " " + day + ", " + year + " @ " + hour + ":" + minutes + suffix;
     }
 
-        get printedEnd(){
+    get printedEnd(){
         let year = this.#end.getFullYear();
         let month = this.#end.toLocaleString("en-GB", {month: "long"});
         let day = this.#end.getDate();
         let hour = this.#end.getHours();
         let minutes = this.#end.getMinutes();
         let suffix = "AM";
+
+        if (minutes < 10){
+            minutes = "0" + minutes;
+        }
 
         if (hour == 0 || hour == 12){
             hour = hour + 12;
@@ -83,6 +92,20 @@ class Task{
         }
         
         return month + " " + day + ", " + year + " @ " + hour + ":" + minutes + suffix;
+    }
+
+    get printedStartShort(){
+        let month = this.#start.toLocaleString("en-GB", {month: "long"});
+        let day = this.#start.getDate();
+
+        return month + " " + day;
+    }
+
+    get printedEndShort(){
+        let month = this.#end.toLocaleString("en-GB", {month: "long"});
+        let day = this.#end.getDate();
+
+        return month + " " + day;
     }
 }
 
