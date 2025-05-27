@@ -35,8 +35,8 @@ function App() {
         <button class="close-button" onClick={() => setTaskShow((prev) => !prev)}>⨉</button>
         <h2>{task.title}</h2>
         <div>
-          <p>From: {task.start.toLocaleString()}</p>
-          <p>To: {task.end.toLocaleString()}</p>
+          <p>From: {task.printedStart}</p>
+          <p>To: {task.printedEnd}</p>
         </div>
         <p class="task-description">{task.description}</p>
       </div>
@@ -86,9 +86,7 @@ function App() {
                       <div  onClick={() => clickDiv(task.id)}>
                         <h3 class="task-title">{task.title}</h3>
                         <div class="task-date">
-                          <p>{task.start.toLocaleString()}</p>
-                          <p>to</p>
-                          <p>{task.end.toLocaleString()}</p>
+                          <p>{task.start.toLocaleString()} - {task.end.toLocaleString()}</p>
                         </div>
                       </div>
                       <button class="delete-button" onClick={() => deleteTask(task.id)}>🗑</button>

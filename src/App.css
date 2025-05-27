@@ -175,7 +175,7 @@ html{
 
 .task-date{
   display: flex;
-  flex-direction: column;
+  overflow-wrap: break-word;
 }
 
 .task-date > p{
@@ -184,10 +184,15 @@ html{
 }
 
 .delete-button{
+  margin-top: 10px;
   background: none;
   border: none;
-  box-shadow: 2px 2px ;
+  box-shadow: 2px 2px;
   font-size: 30px;
+}
+
+.delete-button:active{
+  box-shadow: -2px -2px;
 }
 
 .close-button{
