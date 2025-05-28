@@ -44,9 +44,8 @@ function App() {
   }
 
   function TaskItem({task}){
-
     return(
-    <div class="task-body">
+    <div class="task-body" classList={{taskhighlight: task.importance != 1}}>
       <div onClick={() => clickDiv(task.id)}>
         <h3 class="task-title">{task.title}</h3>
         <div class="task-date">
@@ -98,11 +97,23 @@ function App() {
             <ol class="task-container">
               <For each={Object.values(taskStore).filter((task) => task.type == "completed")}>
                 {(task) => (
-                  <For each={(task) => task.importance == 2}>
-                    {(task) => (
-                      <TaskItem task={task}/>
-                    )}
-                  </For>
+                  <Show when={task.importance == 3}>
+                    <TaskItem task={task}/>
+                  </Show>
+                )}
+              </For>
+              <For each={Object.values(taskStore).filter((task) => task.type == "completed")}>
+                {(task) => (
+                  <Show when={task.importance == 2}>
+                    <TaskItem task={task}/>
+                  </Show>
+                )}
+              </For>
+              <For each={Object.values(taskStore).filter((task) => task.type == "completed")}>
+                {(task) => (
+                  <Show when={task.importance == 1}>
+                    <TaskItem task={task}/>
+                  </Show>
                 )}
               </For>
             </ol>
@@ -153,37 +164,39 @@ function App() {
       <Portal>
         <Show when={showPopUp()}>
           <div class="popup">
-            <div class="popup-body">
-              <h2>Create Task</h2>
-              <div>
-                <label for="title">Title: </label>
-                <input type="text" id="title" name="title" maxLength="75" ref={title}></input>
+            <form>
+              <div class="popup-body">
+                <h2>Create Task</h2>
+                <div>
+                  <label for="title">Title: </label>
+                  <input type="text" id="title" name="title" maxLength="75" ref={title} required></input>
+                </div>
+                <div>
+                  <label for="start">Start Date/Time: </label>
+                  <input type="datetime-local" name="start" id="start" value={"2025-05-20T08:30"} ref={start} />
+                </div>
+                <div>
+                  <label for="end-date">End Date/Time: </label>
+                  <input type="datetime-local" name="end" id="end" value={"2025-05-20T08:30"} ref={end}/>
+                </div>
+                <div class="description-field">
+                  <label for="description">Description: </label>
+                  <textarea name="description" id="description" maxLength="350" rows="5" ref={description} required></textarea>
+                </div>
+                <div>
+                  <label for="task-importance">Importance Level: </label>
+                  <select name="task-importance" id="task-importance" ref={importance}>
+                    <option value="1">Basic</option>
+                    <option value="2">Highlighting</option>
+                    <option value="3">Desktop Notifications</option>
+                  </select>
+                </div>
+                <div class="button-container">
+                  <input type="submit" class="create-button" onClick={() => createTask()}>Create</input>
+                  <button class="cancel-button" onClick={() => setShow((prev) => !prev)}>Cancel</button>
+                </div>
               </div>
-              <div>
-                <label for="start">Start Date/Time: </label>
-                <input type="datetime-local" name="start" id="start" value={"2025-05-20T08:30"} ref={start} />
-              </div>
-              <div>
-                <label for="end-date">End Date/Time: </label>
-                <input type="datetime-local" name="end" id="end" value={"2025-05-20T08:30"} ref={end}/>
-              </div>
-              <div class="description-field">
-                <label for="description">Description: </label>
-                <textarea name="description" id="description" maxLength="350" rows="5" ref={description}></textarea>
-              </div>
-              <div>
-                <label for="task-importance">Importance Level: </label>
-                <select name="task-importance" id="task-importance" ref={importance}>
-                  <option value="level1">Basic</option>
-                  <option value="level2">Highlighting</option>
-                  <option value="level3">Desktop Notifications</option>
-                </select>
-              </div>
-              <div class="button-container">
-                <button class="create-button" onClick={() => createTask()}>Create</button>
-                <button class="cancel-button" onClick={() => setShow((prev) => !prev)}>Cancel</button>
-              </div>
-            </div>
+            </form>
           </div>
         </Show>
       </Portal>
