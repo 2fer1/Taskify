@@ -113,7 +113,7 @@ html{
   max-width: 50vw;
   max-height: 50vh;
   min-width: 450px;
-  min-height: 400px;
+  min-height: 450px;
   padding: 3vh 2vw;
 }
 
@@ -125,6 +125,19 @@ html{
   min-width: 450px;
 }
 
+.title-field{
+  display: flex;
+  flex-direction: column;
+}
+
+.fieldErr{
+  border: 2px solid red;
+}
+
+.error-message{
+  margin-top: 5px;
+  color: red;
+}
 .button-container{
   display: flex;
   justify-content: space-between;

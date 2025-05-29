@@ -17,15 +17,17 @@ function App() {
   const [showTask, setTaskShow] = createSignal(false);
   const [chosenColumn, setColumn] = createSignal("");
   const [taskId, setTaskId] = createSignal("");
+  const [titleError, setTitleError] = createSignal(false);
+  const [descError, setDescError] = createSignal(false);
 
   const [taskStore, setStore] = createStore({});
 
   //const id = createUniqueId();
 
-  let title;
+  let title = undefined;
   let start;
   let end;
-  let description;
+  let description = undefined;
   let importance;
 
 
@@ -73,12 +75,35 @@ function App() {
   }
 
   function createTask(){
-    let curId = createUniqueId();
-    const task = new Task(curId, chosenColumn(), title.value, start.value, end.value, description.value, importance.value);
+    if (title.value == ""){
+      setTitleError(true);
+    } else {
+      setTitleError(false);
+    }
+    
+    if (description.value == ""){
+      setDescError(true);
+    } else {
+      setDescError(false);
+    }
+    
+    if (title.value != "" && description.value != ""){
+      let curId = createUniqueId();
+      const task = new Task(curId, chosenColumn(), title.value, start.value, end.value, description.value, importance.value);
 
-    title = start = end = description = importance = undefined;
+      title = start = end = description = importance = undefined;
 
-    setStore(curId, task);
+      setStore(curId, task);
+      setShow((prev) => !prev);
+      setTitleError(false);
+      setDescError(false);
+    }
+
+  }
+
+  function cancelCreate(){
+    setTitleError(false);
+    setDescError(false);
     setShow((prev) => !prev);
   }
 
@@ -164,39 +189,39 @@ function App() {
       <Portal>
         <Show when={showPopUp()}>
           <div class="popup">
-            <form>
-              <div class="popup-body">
-                <h2>Create Task</h2>
-                <div>
-                  <label for="title">Title: </label>
-                  <input type="text" id="title" name="title" maxLength="75" ref={title} required></input>
-                </div>
-                <div>
-                  <label for="start">Start Date/Time: </label>
-                  <input type="datetime-local" name="start" id="start" value={"2025-05-20T08:30"} ref={start} />
-                </div>
-                <div>
-                  <label for="end-date">End Date/Time: </label>
-                  <input type="datetime-local" name="end" id="end" value={"2025-05-20T08:30"} ref={end}/>
-                </div>
-                <div class="description-field">
-                  <label for="description">Description: </label>
-                  <textarea name="description" id="description" maxLength="350" rows="5" ref={description} required></textarea>
-                </div>
-                <div>
-                  <label for="task-importance">Importance Level: </label>
-                  <select name="task-importance" id="task-importance" ref={importance}>
-                    <option value="1">Basic</option>
-                    <option value="2">Highlighting</option>
-                    <option value="3">Desktop Notifications</option>
-                  </select>
-                </div>
-                <div class="button-container">
-                  <input type="submit" class="create-button" onClick={() => createTask()}>Create</input>
-                  <button class="cancel-button" onClick={() => setShow((prev) => !prev)}>Cancel</button>
-                </div>
+            <div class="popup-body">
+              <h2>Create Task</h2>
+              <div class="title-field">
+                <label for="title">Title: </label>
+                <input type="text" id="title" name="title" maxLength="75" ref={title} classList={{fieldErr: titleError() == true}}></input>
+                <Show when={titleError() == true}><p class="error-message">This field is required.</p></Show>
               </div>
-            </form>
+              <div>
+                <label for="start">Start Date/Time: </label>
+                <input type="datetime-local" name="start" id="start" value={"2025-05-20T08:30"} ref={start} />
+              </div>
+              <div>
+                <label for="end-date">End Date/Time: </label>
+                <input type="datetime-local" name="end" id="end" value={"2025-05-20T08:30"} ref={end}/>
+              </div>
+              <div class="description-field">
+                <label for="description">Description: </label>
+                <textarea name="description" id="description" maxLength="350" rows="5" ref={description} classList={{fieldErr: descError() == true}}></textarea>
+                <Show when={descError() == true}><p class="error-message">This field is required.</p></Show>
+              </div>
+              <div>
+                <label for="task-importance">Importance Level: </label>
+                <select name="task-importance" id="task-importance" ref={importance}>
+                  <option value="1">Basic</option>
+                  <option value="2">Highlighting</option>
+                  <option value="3">Desktop Notifications</option>
+                </select>
+              </div>
+              <div class="button-container">
+                <button class="create-button" onClick={() => createTask()}>Create</button>
+                <button class="cancel-button" onClick={() => cancelCreate()}>Cancel</button>
+              </div>
+            </div>
           </div>
         </Show>
       </Portal>
