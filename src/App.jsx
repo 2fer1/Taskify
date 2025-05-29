@@ -9,6 +9,8 @@ import { createUniqueId } from "solid-js";
 import { dataDir } from "@tauri-apps/api/path";
 import {For} from "solid-js";
 import trashIcon from "./assets/trash-solid.svg";
+import unPinnedIcon from "./assets/pin-notpinned.svg";
+import pinnedIcon from "./assets/pin-pinned.svg";
 import { getCurrentWindow } from '@tauri-apps/api/window';
 import { createEffect } from "solid-js";
 
@@ -104,7 +106,6 @@ function App() {
       setTitleError(false);
       setDescError(false);
     }
-
   }
 
   function cancelCreate(){
@@ -121,7 +122,12 @@ function App() {
     <main>
       <div class="top-row">
         <p>Taskify</p>
-        <button onClick={() => windowPinner()} class="pin-button">PIN!</button>
+        <Show when={!windowPin()}>
+          <button onClick={() => windowPinner()} class="pin-button"><img src={unPinnedIcon}></img></button>
+        </Show>
+        <Show when={windowPin()}>
+          <button onClick={() => windowPinner()} class="pin-button"><img src={pinnedIcon}></img></button>
+        </Show>
       </div>
       <div class="category-columns">
         <div class="completed-column">
