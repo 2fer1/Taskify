@@ -246,3 +246,7 @@ html{
 .task-description{
   overflow-wrap: break-word;
 }
+
+.pin-button{
+  margin-left: auto;
+}

@@ -9,6 +9,8 @@ import { createUniqueId } from "solid-js";
 import { dataDir } from "@tauri-apps/api/path";
 import {For} from "solid-js";
 import trashIcon from "./assets/trash-solid.svg";
+import { getCurrentWindow } from '@tauri-apps/api/window';
+import { createEffect } from "solid-js";
 
 
 
@@ -19,6 +21,7 @@ function App() {
   const [taskId, setTaskId] = createSignal("");
   const [titleError, setTitleError] = createSignal(false);
   const [descError, setDescError] = createSignal(false);
+  const [windowPin, setWindowPin] = createSignal(false);
 
   const [taskStore, setStore] = createStore({});
 
@@ -30,6 +33,9 @@ function App() {
   let description = undefined;
   let importance;
 
+  createEffect(async() => {
+    await getCurrentWindow().setAlwaysOnTop(windowPin());
+  })
 
   function TaskInfo({task}){
     return(
@@ -107,10 +113,15 @@ function App() {
     setShow((prev) => !prev);
   }
 
+  function windowPinner(){
+    setWindowPin((prev) => !prev);
+  }
+
   return (
     <main>
       <div class="top-row">
         <p>Taskify</p>
+        <button onClick={() => windowPinner()} class="pin-button">PIN!</button>
       </div>
       <div class="category-columns">
         <div class="completed-column">
@@ -151,10 +162,26 @@ function App() {
           <div class="column-body progress-body">
             <button class="add-button" onClick={() => changeColumn("inProgress")}>+</button>
 
-            <ol class="task-container">
-               <For each={Object.values(taskStore).filter((task) => task.type == "inProgress")}>
+             <ol class="task-container">
+              <For each={Object.values(taskStore).filter((task) => task.type == "inProgress")}>
                 {(task) => (
-                  <TaskItem task={task}/>
+                  <Show when={task.importance == 3}>
+                    <TaskItem task={task}/>
+                  </Show>
+                )}
+              </For>
+              <For each={Object.values(taskStore).filter((task) => task.type == "inProgress")}>
+                {(task) => (
+                  <Show when={task.importance == 2}>
+                    <TaskItem task={task}/>
+                  </Show>
+                )}
+              </For>
+              <For each={Object.values(taskStore).filter((task) => task.type == "inProgress")}>
+                {(task) => (
+                  <Show when={task.importance == 1}>
+                    <TaskItem task={task}/>
+                  </Show>
                 )}
               </For>
             </ol>
@@ -168,9 +195,25 @@ function App() {
             <button class="add-button" onClick={() => changeColumn("upcoming")}>+</button>
 
             <ol class="task-container">
-               <For each={Object.values(taskStore).filter((task) => task.type == "upcoming")}>
+              <For each={Object.values(taskStore).filter((task) => task.type == "upcoming")}>
                 {(task) => (
-                  <TaskItem task={task}/>
+                  <Show when={task.importance == 3}>
+                    <TaskItem task={task}/>
+                  </Show>
+                )}
+              </For>
+              <For each={Object.values(taskStore).filter((task) => task.type == "upcoming")}>
+                {(task) => (
+                  <Show when={task.importance == 2}>
+                    <TaskItem task={task}/>
+                  </Show>
+                )}
+              </For>
+              <For each={Object.values(taskStore).filter((task) => task.type == "upcoming")}>
+                {(task) => (
+                  <Show when={task.importance == 1}>
+                    <TaskItem task={task}/>
+                  </Show>
                 )}
               </For>
             </ol>
