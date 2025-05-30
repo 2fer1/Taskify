@@ -121,13 +121,8 @@ function App() {
   return (
     <main>
       <div class="top-row">
-        <p>Taskify</p>
-        <Show when={!windowPin()}>
-          <button onClick={() => windowPinner()} class="pin-button"><img src={unPinnedIcon}></img></button>
-        </Show>
-        <Show when={windowPin()}>
-          <button onClick={() => windowPinner()} class="pin-button"><img src={pinnedIcon}></img></button>
-        </Show>
+        <h1>Tasks</h1>
+        <button onClick={() => windowPinner()} class="pin-button">{<img src={windowPin() ? pinnedIcon : unPinnedIcon}></img>}</button>
       </div>
       <div class="category-columns">
         <div class="completed-column">
