@@ -13,7 +13,26 @@ import unPinnedIcon from "./assets/pin-notpinned.svg";
 import pinnedIcon from "./assets/pin-pinned.svg";
 import { getCurrentWindow } from '@tauri-apps/api/window';
 import { createEffect } from "solid-js";
+// import {
+//   isPermissionGranted,
+//   requestPermission,
+//   sendNotification,
+// } from '@tauri-apps/plugin-notification';
+const { isPermissionGranted, requestPermission, sendNotification, } = window.__TAURI__.notification;
 
+// Do you have permission to send a notification?
+let permissionGranted = await isPermissionGranted();
+
+// If not we need to request it
+if (!permissionGranted) {
+  const permission = await requestPermission();
+  permissionGranted = permission === 'granted';
+}
+
+// // Once permission has been granted we can send the notification
+// if (permissionGranted) {
+//   sendNotification({ title: 'Tauri', body: 'Tauri is awesome!' });
+// }
 
 
 function App() {
@@ -27,13 +46,24 @@ function App() {
 
   const [taskStore, setStore] = createStore({});
 
-  //const id = createUniqueId();
+  const id = createUniqueId();
+
+  const tomorrow = Date.now() + 86400000;
 
   let title = undefined;
   let start;
   let end;
   let description = undefined;
   let importance;
+
+  createEffect(async() => {
+    for(let task in taskStore){
+      if(taskStore[task].importance == 3 && taskStore[task].startInEpoch < tomorrow){
+        console.log("Starting now:" + taskStore[task].title);
+        sendNotification({title: taskStore[task].title, body: 'This task is coming up!'});
+      }
+    }
+  })
 
   createEffect(async() => {
     await getCurrentWindow().setAlwaysOnTop(windowPin());
@@ -98,6 +128,7 @@ function App() {
     if (title.value != "" && description.value != ""){
       let curId = createUniqueId();
       const task = new Task(curId, chosenColumn(), title.value, start.value, end.value, description.value, importance.value);
+      console.log(curId);
 
       title = start = end = description = importance = undefined;
 

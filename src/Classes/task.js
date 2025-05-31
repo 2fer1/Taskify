@@ -107,6 +107,10 @@ class Task{
 
         return month + " " + day;
     }
+
+    get startInEpoch(){
+        return this.#start.getTime();
+    }
 }
 
 export default Task;
