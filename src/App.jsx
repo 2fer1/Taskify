@@ -7,13 +7,17 @@ import { createStore } from "solid-js/store";
 import { Dynamic } from "solid-js/web";
 import { createUniqueId } from "solid-js";
 import { dataDir } from "@tauri-apps/api/path";
-import {For} from "solid-js";
+import { For } from "solid-js";
 import trashIcon from "./assets/trash-solid.svg";
 import unPinnedIcon from "./assets/pin-notpinned.svg";
 import pinnedIcon from "./assets/pin-pinned.svg";
-import { getCurrentWindow } from '@tauri-apps/api/window';
+import { getCurrentWindow } from "@tauri-apps/api/window";
 import { createEffect } from "solid-js";
-const { isPermissionGranted, requestPermission, sendNotification, } = window.__TAURI__.notification;
+const {
+  isPermissionGranted,
+  requestPermission,
+  sendNotification,
+} = window.__TAURI__.notification;
 const { load } = window.__TAURI__.store;
 
 // Do you have permission to send a notification?
@@ -22,17 +26,12 @@ let permissionGranted = await isPermissionGranted();
 // If not we need to request it
 if (!permissionGranted) {
   const permission = await requestPermission();
-  permissionGranted = permission === 'granted';
+  permissionGranted = permission === "granted";
 }
 
-const store = await load('store.json', { autoSave: false });
-console.log("Test");
+const taskFile = await load("tasks.json", { autoSave: false });
 
-await store.set('some-key', { value: 5 });
-
-const val = await store.get('some-key');
-console.log(val); // { value: 5 }
-
+await taskFile.save();
 
 function App() {
   const [showPopUp, setShow] = createSignal(false);
@@ -45,9 +44,29 @@ function App() {
 
   const [taskStore, setStore] = createStore({});
 
+  function test(){
+    console.log("Begin");
+    const val = taskFile.get("cl-1", "title");
+    console.log(val);
+    for (const task in taskFile) {
+      console.log("Testing");
+      const tempTask = new Task(task.id, task.type, task.title, task.start, task.end, task.description, task.importance);
+      setStore(task.id, tempTask);
+    }
+  }
+
+  // createEffect(async () =>{
+  //   for (const task in taskFile) {
+  //     console.log("Testing");
+  //     const tempTask = new Task(task.id, task.type, task.title, task.start, task.end, task.description, task.importance);
+  //     setStore(task.id, tempTask);
+  //   }
+  // })
+  
+
   const id = createUniqueId();
 
-  const threeDaysAgo = Date.now() - 3*86400000;
+  const threeDaysAgo = Date.now() - 3 * 86400000;
 
   let title = undefined;
   let start;
@@ -55,24 +74,36 @@ function App() {
   let description = undefined;
   let importance;
 
-  createEffect(async() => {
-    for(let task in taskStore){
+  createEffect(async () => {
+    for (let task in taskStore) {
       let curTask = taskStore[task];
-      if(curTask.importance == 3 && curTask.startInEpoch > threeDaysAgo && curTask.notified == false){
-        sendNotification({title: curTask.title, body: 'This task starts ' + curTask.printedStart});
+      if (
+        curTask.importance == 3 &&
+        curTask.startInEpoch > threeDaysAgo &&
+        curTask.notified == false
+      ) {
+        sendNotification({
+          title: curTask.title,
+          body: "This task starts " + curTask.printedStart,
+        });
         curTask.notified = true;
       }
     }
-  })
+  });
 
-  createEffect(async() => {
+  createEffect(async () => {
     await getCurrentWindow().setAlwaysOnTop(windowPin());
-  })
+  });
 
-  function TaskInfo({task}){
-    return(
+  function TaskInfo({ task }) {
+    return (
       <div class="popup-body">
-        <button class="close-button" onClick={() => setTaskShow((prev) => !prev)}>⨉</button>
+        <button
+          class="close-button"
+          onClick={() => setTaskShow((prev) => !prev)}
+        >
+          ⨉
+        </button>
         <h2>{task.title}</h2>
         <div>
           <p>From: {task.printedStart}</p>
@@ -80,72 +111,100 @@ function App() {
         </div>
         <p class="task-description">{task.description}</p>
       </div>
-    )
+    );
   }
 
-  function TaskItem({task}){
-    return(
-    <div class="task-body" classList={{taskhighlight: task.importance != 1}}>
-      <div onClick={() => clickDiv(task.id)}>
-        <h3 class="task-title">{task.title}</h3>
-        <div class="task-date">
-          <p>{task.printedStartShort} - {task.printedEndShort}</p>
+  function TaskItem({ task }) {
+    return (
+      <div
+        class="task-body"
+        classList={{ taskhighlight: task.importance != 1 }}
+      >
+        <div onClick={() => clickDiv(task.id)}>
+          <h3 class="task-title">{task.title}</h3>
+          <div class="task-date">
+            <p>
+              {task.printedStartShort} - {task.printedEndShort}
+            </p>
+          </div>
         </div>
+        <button class="delete-button" onClick={() => deleteTask(task.id)}>
+          <img src={trashIcon}></img>
+        </button>
       </div>
-      <button class="delete-button" onClick={() => deleteTask(task.id)}><img src={trashIcon}></img></button>
-    </div>
-    )
+    );
   }
 
-  function deleteTask(taskId){
+  function deleteTask(taskId) {
     setTaskId(taskId - 1);
     setStore(taskId, undefined);
   }
 
-  function clickDiv(taskId){
+  function clickDiv(taskId) {
     setTaskId(taskId);
     setTaskShow((prev) => !prev);
   }
 
-  function changeColumn(column){
+  function changeColumn(column) {
     setColumn(column);
     setShow((prev) => !prev);
   }
 
-  function createTask(){
-    if (title.value == ""){
+  function createTask() {
+    if (title.value == "") {
       setTitleError(true);
     } else {
       setTitleError(false);
     }
-    
-    if (description.value == ""){
+
+    if (description.value == "") {
       setDescError(true);
     } else {
       setDescError(false);
     }
-    
-    if (title.value != "" && description.value != ""){
+
+    if (title.value != "" && description.value != "") {
       let curId = createUniqueId();
-      const task = new Task(curId, chosenColumn(), title.value, start.value, end.value, description.value, importance.value);
+      const task = new Task(
+        curId,
+        chosenColumn(),
+        title.value,
+        start.value,
+        end.value,
+        description.value,
+        importance.value
+      );
       console.log(curId);
 
       title = start = end = description = importance = undefined;
 
       setStore(curId, task);
+
+      taskFile.set(curId, {
+        id: task.id,
+        type: task.type,
+        title: task.title,
+        start: task.start,
+        end: task.end,
+        description: task.description,
+        importance: task.importance,
+        notified: task.notified,
+      });
+      taskFile.save();
+
       setShow((prev) => !prev);
       setTitleError(false);
       setDescError(false);
     }
   }
 
-  function cancelCreate(){
+  function cancelCreate() {
     setTitleError(false);
     setDescError(false);
     setShow((prev) => !prev);
   }
 
-  function windowPinner(){
+  function windowPinner() {
     setWindowPin((prev) => !prev);
   }
 
@@ -153,7 +212,10 @@ function App() {
     <main>
       <div class="top-row">
         <h1>Tasks</h1>
-        <button onClick={() => windowPinner()} class="pin-button">{<img src={windowPin() ? pinnedIcon : unPinnedIcon}></img>}</button>
+        <button onClick={() => test()}>Test!</button>
+        <button onClick={() => windowPinner()} class="pin-button">
+          {<img src={windowPin() ? pinnedIcon : unPinnedIcon}></img>}
+        </button>
       </div>
       <div class="category-columns">
         <div class="completed-column">
@@ -161,26 +223,43 @@ function App() {
             <h2>Completed</h2>
           </div>
           <div class="column-body completed-body">
-            <button class="add-button" onClick={() => changeColumn("completed")}>+</button>
+            <button
+              class="add-button"
+              onClick={() => changeColumn("completed")}
+            >
+              +
+            </button>
             <ol class="task-container">
-              <For each={Object.values(taskStore).filter((task) => task.type == "completed")}>
+              <For
+                each={Object.values(taskStore).filter(
+                  (task) => task.type == "completed"
+                )}
+              >
                 {(task) => (
                   <Show when={task.importance == 3}>
-                    <TaskItem task={task}/>
+                    <TaskItem task={task} />
                   </Show>
                 )}
               </For>
-              <For each={Object.values(taskStore).filter((task) => task.type == "completed")}>
+              <For
+                each={Object.values(taskStore).filter(
+                  (task) => task.type == "completed"
+                )}
+              >
                 {(task) => (
                   <Show when={task.importance == 2}>
-                    <TaskItem task={task}/>
+                    <TaskItem task={task} />
                   </Show>
                 )}
               </For>
-              <For each={Object.values(taskStore).filter((task) => task.type == "completed")}>
+              <For
+                each={Object.values(taskStore).filter(
+                  (task) => task.type == "completed"
+                )}
+              >
                 {(task) => (
                   <Show when={task.importance == 1}>
-                    <TaskItem task={task}/>
+                    <TaskItem task={task} />
                   </Show>
                 )}
               </For>
@@ -192,27 +271,44 @@ function App() {
             <h2>In Progress</h2>
           </div>
           <div class="column-body progress-body">
-            <button class="add-button" onClick={() => changeColumn("inProgress")}>+</button>
+            <button
+              class="add-button"
+              onClick={() => changeColumn("inProgress")}
+            >
+              +
+            </button>
 
-             <ol class="task-container">
-              <For each={Object.values(taskStore).filter((task) => task.type == "inProgress")}>
+            <ol class="task-container">
+              <For
+                each={Object.values(taskStore).filter(
+                  (task) => task.type == "inProgress"
+                )}
+              >
                 {(task) => (
                   <Show when={task.importance == 3}>
-                    <TaskItem task={task}/>
+                    <TaskItem task={task} />
                   </Show>
                 )}
               </For>
-              <For each={Object.values(taskStore).filter((task) => task.type == "inProgress")}>
+              <For
+                each={Object.values(taskStore).filter(
+                  (task) => task.type == "inProgress"
+                )}
+              >
                 {(task) => (
                   <Show when={task.importance == 2}>
-                    <TaskItem task={task}/>
+                    <TaskItem task={task} />
                   </Show>
                 )}
               </For>
-              <For each={Object.values(taskStore).filter((task) => task.type == "inProgress")}>
+              <For
+                each={Object.values(taskStore).filter(
+                  (task) => task.type == "inProgress"
+                )}
+              >
                 {(task) => (
                   <Show when={task.importance == 1}>
-                    <TaskItem task={task}/>
+                    <TaskItem task={task} />
                   </Show>
                 )}
               </For>
@@ -224,27 +320,41 @@ function App() {
             <h2>Upcoming</h2>
           </div>
           <div class="column-body upcoming-body">
-            <button class="add-button" onClick={() => changeColumn("upcoming")}>+</button>
+            <button class="add-button" onClick={() => changeColumn("upcoming")}>
+              +
+            </button>
 
             <ol class="task-container">
-              <For each={Object.values(taskStore).filter((task) => task.type == "upcoming")}>
+              <For
+                each={Object.values(taskStore).filter(
+                  (task) => task.type == "upcoming"
+                )}
+              >
                 {(task) => (
                   <Show when={task.importance == 3}>
-                    <TaskItem task={task}/>
+                    <TaskItem task={task} />
                   </Show>
                 )}
               </For>
-              <For each={Object.values(taskStore).filter((task) => task.type == "upcoming")}>
+              <For
+                each={Object.values(taskStore).filter(
+                  (task) => task.type == "upcoming"
+                )}
+              >
                 {(task) => (
                   <Show when={task.importance == 2}>
-                    <TaskItem task={task}/>
+                    <TaskItem task={task} />
                   </Show>
                 )}
               </For>
-              <For each={Object.values(taskStore).filter((task) => task.type == "upcoming")}>
+              <For
+                each={Object.values(taskStore).filter(
+                  (task) => task.type == "upcoming"
+                )}
+              >
                 {(task) => (
                   <Show when={task.importance == 1}>
-                    <TaskItem task={task}/>
+                    <TaskItem task={task} />
                   </Show>
                 )}
               </For>
@@ -256,7 +366,7 @@ function App() {
       <Portal>
         <Show when={showTask()}>
           <div class="popup">
-            <TaskInfo task={taskStore[taskId()]}/>
+            <TaskInfo task={taskStore[taskId()]} />
           </div>
         </Show>
       </Portal>
@@ -268,33 +378,71 @@ function App() {
               <h2>Create Task</h2>
               <div class="title-field">
                 <label for="title">Title: </label>
-                <input type="text" id="title" name="title" maxLength="75" ref={title} classList={{fieldErr: titleError() == true}}></input>
-                <Show when={titleError() == true}><p class="error-message">This field is required.</p></Show>
+                <input
+                  type="text"
+                  id="title"
+                  name="title"
+                  maxLength="75"
+                  ref={title}
+                  classList={{ fieldErr: titleError() == true }}
+                ></input>
+                <Show when={titleError() == true}>
+                  <p class="error-message">This field is required.</p>
+                </Show>
               </div>
               <div>
                 <label for="start">Start Date/Time: </label>
-                <input type="datetime-local" name="start" id="start" value={"2025-05-20T08:30"} ref={start} />
+                <input
+                  type="datetime-local"
+                  name="start"
+                  id="start"
+                  value={"2025-05-20T08:30"}
+                  ref={start}
+                />
               </div>
               <div>
                 <label for="end-date">End Date/Time: </label>
-                <input type="datetime-local" name="end" id="end" value={"2025-05-20T08:30"} ref={end}/>
+                <input
+                  type="datetime-local"
+                  name="end"
+                  id="end"
+                  value={"2025-05-20T08:30"}
+                  ref={end}
+                />
               </div>
               <div class="description-field">
                 <label for="description">Description: </label>
-                <textarea name="description" id="description" maxLength="350" rows="5" ref={description} classList={{fieldErr: descError() == true}}></textarea>
-                <Show when={descError() == true}><p class="error-message">This field is required.</p></Show>
+                <textarea
+                  name="description"
+                  id="description"
+                  maxLength="350"
+                  rows="5"
+                  ref={description}
+                  classList={{ fieldErr: descError() == true }}
+                ></textarea>
+                <Show when={descError() == true}>
+                  <p class="error-message">This field is required.</p>
+                </Show>
               </div>
               <div>
                 <label for="task-importance">Importance Level: </label>
-                <select name="task-importance" id="task-importance" ref={importance}>
+                <select
+                  name="task-importance"
+                  id="task-importance"
+                  ref={importance}
+                >
                   <option value="1">Basic</option>
                   <option value="2">Highlighting</option>
                   <option value="3">Desktop Notifications</option>
                 </select>
               </div>
               <div class="button-container">
-                <button class="create-button" onClick={() => createTask()}>Create</button>
-                <button class="cancel-button" onClick={() => cancelCreate()}>Cancel</button>
+                <button class="create-button" onClick={() => createTask()}>
+                  Create
+                </button>
+                <button class="cancel-button" onClick={() => cancelCreate()}>
+                  Cancel
+                </button>
               </div>
             </div>
           </div>
