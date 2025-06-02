@@ -6,6 +6,7 @@ class Task{
     #end;
     #description;
     #importance;
+    #notified = false;
 
     constructor(id, type, title, start, end, description, importance){
         this.#id = id;
@@ -43,6 +44,14 @@ class Task{
 
     get importance(){
         return this.#importance;
+    }
+
+    get notified(){
+        return this.#notified;
+    }
+
+    set notified(value){
+        this.#notified = value;
     }
 
     get printedStart(){

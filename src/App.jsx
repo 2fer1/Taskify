@@ -48,7 +48,7 @@ function App() {
 
   const id = createUniqueId();
 
-  const tomorrow = Date.now() + 86400000;
+  const threeDaysAgo = Date.now() - 3*86400000;
 
   let title = undefined;
   let start;
@@ -58,9 +58,10 @@ function App() {
 
   createEffect(async() => {
     for(let task in taskStore){
-      if(taskStore[task].importance == 3 && taskStore[task].startInEpoch < tomorrow){
-        console.log("Starting now:" + taskStore[task].title);
-        sendNotification({title: taskStore[task].title, body: 'This task is coming up!'});
+      let curTask = taskStore[task];
+      if(curTask.importance == 3 && curTask.startInEpoch > threeDaysAgo && curTask.notified == false){
+        sendNotification({title: curTask.title, body: 'This task starts ' + curTask.printedStart});
+        curTask.notified = true;
       }
     }
   })
