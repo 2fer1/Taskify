@@ -9,6 +9,7 @@
     "core:default",
     "opener:default",
     "core:window:allow-set-always-on-top",
-    "notification:default"
+    "notification:default",
+    "store:default"
   ]
 }

@@ -13,12 +13,8 @@ import unPinnedIcon from "./assets/pin-notpinned.svg";
 import pinnedIcon from "./assets/pin-pinned.svg";
 import { getCurrentWindow } from '@tauri-apps/api/window';
 import { createEffect } from "solid-js";
-// import {
-//   isPermissionGranted,
-//   requestPermission,
-//   sendNotification,
-// } from '@tauri-apps/plugin-notification';
 const { isPermissionGranted, requestPermission, sendNotification, } = window.__TAURI__.notification;
+const { load } = window.__TAURI__.store;
 
 // Do you have permission to send a notification?
 let permissionGranted = await isPermissionGranted();
@@ -29,10 +25,13 @@ if (!permissionGranted) {
   permissionGranted = permission === 'granted';
 }
 
-// // Once permission has been granted we can send the notification
-// if (permissionGranted) {
-//   sendNotification({ title: 'Tauri', body: 'Tauri is awesome!' });
-// }
+const store = await load('store.json', { autoSave: false });
+console.log("Test");
+
+await store.set('some-key', { value: 5 });
+
+const val = await store.get('some-key');
+console.log(val); // { value: 5 }
 
 
 function App() {
