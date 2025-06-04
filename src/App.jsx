@@ -44,15 +44,25 @@ function App() {
 
   const [taskStore, setStore] = createStore({});
 
-  function test(){
+  async function test(){
     console.log("Begin");
-    const val = taskFile.get("cl-1", "title");
-    console.log(val);
-    for (const task in taskFile) {
-      console.log("Testing");
-      const tempTask = new Task(task.id, task.type, task.title, task.start, task.end, task.description, task.importance);
-      setStore(task.id, tempTask);
+    
+    const val = await taskFile.get("cl-1");
+
+    const tempTitle = val.title
+    console.log(tempTitle);
+
+    for (const item of await taskFile.entries()){
+      console.log(item[1].title);
+      const tempTask = new Task(item[1].id, item[1].type, item[1].title, item[1].start, item[1].end, item[1].description, item[1].importance);
+      setStore(item[1].id, tempTask);
     }
+
+    // for (const task in taskFile) {
+    //   console.log("Testing");
+    //   const tempTask = new Task(task.id, task.type, task.title, task.start, task.end, task.description, task.importance);
+    //   setStore(task.id, tempTask);
+    // }
   }
 
   // createEffect(async () =>{
