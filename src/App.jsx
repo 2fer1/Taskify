@@ -44,34 +44,12 @@ function App() {
 
   const [taskStore, setStore] = createStore({});
 
-  async function test(){
-    console.log("Begin");
-    
-    const val = await taskFile.get("cl-1");
-
-    const tempTitle = val.title
-    console.log(tempTitle);
-
+  createEffect(async () =>{
     for (const item of await taskFile.entries()){
-      console.log(item[1].title);
       const tempTask = new Task(item[1].id, item[1].type, item[1].title, item[1].start, item[1].end, item[1].description, item[1].importance);
       setStore(item[1].id, tempTask);
     }
-
-    // for (const task in taskFile) {
-    //   console.log("Testing");
-    //   const tempTask = new Task(task.id, task.type, task.title, task.start, task.end, task.description, task.importance);
-    //   setStore(task.id, tempTask);
-    // }
-  }
-
-  // createEffect(async () =>{
-  //   for (const task in taskFile) {
-  //     console.log("Testing");
-  //     const tempTask = new Task(task.id, task.type, task.title, task.start, task.end, task.description, task.importance);
-  //     setStore(task.id, tempTask);
-  //   }
-  // })
+  })
   
 
   const id = createUniqueId();
@@ -148,6 +126,7 @@ function App() {
   function deleteTask(taskId) {
     setTaskId(taskId - 1);
     setStore(taskId, undefined);
+    taskFile.delete(taskId);
   }
 
   function clickDiv(taskId) {
@@ -174,9 +153,10 @@ function App() {
     }
 
     if (title.value != "" && description.value != "") {
-      let curId = createUniqueId();
+      // let curId = createUniqueId();
+      let uuid = self.crypto.randomUUID();
       const task = new Task(
-        curId,
+        uuid,
         chosenColumn(),
         title.value,
         start.value,
@@ -184,13 +164,13 @@ function App() {
         description.value,
         importance.value
       );
-      console.log(curId);
+      console.log(uuid);
 
       title = start = end = description = importance = undefined;
 
-      setStore(curId, task);
+      setStore(uuid, task);
 
-      taskFile.set(curId, {
+      taskFile.set(uuid, {
         id: task.id,
         type: task.type,
         title: task.title,
@@ -222,7 +202,6 @@ function App() {
     <main>
       <div class="top-row">
         <h1>Tasks</h1>
-        <button onClick={() => test()}>Test!</button>
         <button onClick={() => windowPinner()} class="pin-button">
           {<img src={windowPin() ? pinnedIcon : unPinnedIcon}></img>}
         </button>
