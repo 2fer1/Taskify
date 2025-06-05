@@ -114,6 +114,52 @@ html{
   align-self: flex-end;
 }
 
+.delete-window{
+  background-color: #e3e7e9;
+  border-radius: 10px;
+  padding: 10px;
+  height: 200px;
+  width: 350px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.delete-window h2{
+  margin: 0px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #c3c7c9;
+}
+
+.delete-window p{
+  text-align: center;
+}
+
+.delete-window div{
+  margin: 0px;
+  padding-top: 30px;
+  display: flex;
+  justify-content: space-between;
+  border-top: 2px solid #c3c7c9;
+}
+
+.delete-cancel{
+  font-size: 18px;
+  padding: 10px 15px;
+  border-radius: 5px;
+  background-color: #e8ecee;
+  border: 1px solid #c3c7c9;
+}
+
+.delete-confirm{
+  font-size: 18px;
+  padding: 10px 15px;
+  border-radius: 5px;
+  color: white;
+  background-color: rgb(226, 55, 55);
+  border: 1px solid #c3c7c9;
+}
+
 .popup{
   position: absolute;
   inset: 0;

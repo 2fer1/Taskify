@@ -41,6 +41,7 @@ function App() {
   const [titleError, setTitleError] = createSignal(false);
   const [descError, setDescError] = createSignal(false);
   const [windowPin, setWindowPin] = createSignal(false);
+  const [deleteWindow, setDeleteWindow] = createSignal(false);
 
   const [taskStore, setStore] = createStore({});
 
@@ -116,7 +117,7 @@ function App() {
             </p>
           </div>
         </div>
-        <button class="delete-button" onClick={() => deleteTask(task.id)}>
+        <button class="delete-button" onClick={() => maybeDelete(task.id)}>
           <img src={trashIcon}></img>
         </button>
       </div>
@@ -126,12 +127,18 @@ function App() {
   function deleteTask(taskId) {
     setTaskId(taskId - 1);
     setStore(taskId, undefined);
+    setDeleteWindow(false);
     taskFile.delete(taskId);
   }
 
   function clickDiv(taskId) {
     setTaskId(taskId);
     setTaskShow((prev) => !prev);
+  }
+
+  function maybeDelete(taskId){
+    setTaskId(taskId);
+    setDeleteWindow(true);
   }
 
   function changeColumn(column) {
@@ -351,6 +358,21 @@ function App() {
           </div>
         </div>
       </div>
+
+      <Portal>
+        <Show when={deleteWindow()}>
+          <div class="popup">
+            <div class="delete-window">
+              <h2>Delete</h2>
+              <p>Are you sure you want to delete this task?</p>
+              <div>
+                <button class="delete-cancel" onClick={() => setDeleteWindow(false)}>Cancel</button>
+                <button class="delete-confirm" onClick={() => deleteTask(taskId())}>Delete</button>
+              </div>      
+            </div>
+          </div>      
+        </Show>
+      </Portal>
 
       <Portal>
         <Show when={showTask()}>
