@@ -19,6 +19,7 @@ const {
   sendNotification,
 } = window.__TAURI__.notification;
 const { load } = window.__TAURI__.store;
+import sureAudio from "./assets/Are-You-Sure-Trimmed.mp3";
 
 // Do you have permission to send a notification?
 let permissionGranted = await isPermissionGranted();
@@ -56,6 +57,8 @@ function App() {
   const id = createUniqueId();
 
   const threeDaysAgo = Date.now() - 3 * 86400000;
+
+  let question;
 
   let title = undefined;
   let start;
@@ -129,6 +132,8 @@ function App() {
     setStore(taskId, undefined);
     setDeleteWindow(false);
     taskFile.delete(taskId);
+    question.pause();
+    question.currentTime = 0;
   }
 
   function clickDiv(taskId) {
@@ -139,6 +144,7 @@ function App() {
   function maybeDelete(taskId){
     setTaskId(taskId);
     setDeleteWindow(true);
+    question.play();
   }
 
   function changeColumn(column) {
@@ -209,6 +215,7 @@ function App() {
     <main>
       <div class="top-row">
         <h1>Tasks</h1>
+        <audio loop src={sureAudio} ref={question}></audio>
         <button onClick={() => windowPinner()} class="pin-button">
           {<img src={windowPin() ? pinnedIcon : unPinnedIcon}></img>}
         </button>
