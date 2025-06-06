@@ -14,6 +14,10 @@ html{
   font-family: "Inter", Arial, Helvetica, sans-serif;
 }
 
+body{
+  margin: 0px;
+}
+
 /* Top row that contains the "create" button */
 .top-row{
   display: flex;
@@ -46,7 +50,7 @@ html{
   display: flex;
   justify-content: space-around;
   background-color: #e9eff1e3;
-  max-width: 80vw;
+  width: 100%;
 }
 
 .column-body{
@@ -60,11 +64,18 @@ html{
   width: 0;
 }
 
-.completed-title{
-  background-color: #87c2fa;
+.column-title{
   text-align: center;
-  border-top-left-radius: 15px;
   padding: 2px 0px;
+}
+
+.column-title h2{
+  margin: 10px 0px;
+  font-size: 18px;
+}
+
+.completed{
+  background-color: #a4d3ff;
 }
 
 .completed-body{
@@ -79,10 +90,8 @@ html{
   background-color: #e3e7e9e3;
 }
 
-.progress-title{
-  background-color: #ff7777;
-  text-align: center;
-  padding: 2px 0px;
+.progress{
+  background-color: #f89696;
 }
 
 .progress-body{
@@ -96,11 +105,8 @@ html{
   width: 0;
 }
 
-.upcoming-title{
-  background-color: #86ff88;
-  text-align: center;
-  border-top-right-radius: 15px;
-  padding: 2px 0px;
+.upcoming{
+  background-color: #98fc9a;
 }
 
 .upcoming-body{

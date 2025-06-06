@@ -222,7 +222,7 @@ function App() {
       </div>
       <div class="category-columns">
         <div class="completed-column">
-          <div class="completed-title">
+          <div class="column-title completed">
             <h2>Completed</h2>
           </div>
           <div class="column-body completed-body">
@@ -270,7 +270,7 @@ function App() {
           </div>
         </div>
         <div class="progress-column">
-          <div class="progress-title">
+          <div class="column-title progress">
             <h2>In Progress</h2>
           </div>
           <div class="column-body progress-body">
@@ -319,7 +319,7 @@ function App() {
           </div>
         </div>
         <div class="upcoming-column">
-          <div class="upcoming-title">
+          <div class="column-title upcoming">
             <h2>Upcoming</h2>
           </div>
           <div class="column-body upcoming-body">
