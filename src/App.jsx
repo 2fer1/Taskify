@@ -214,7 +214,6 @@ function App() {
   return (
     <main>
       <div class="top-row">
-        <h1>Tasks</h1>
         <audio loop src={sureAudio} ref={question}></audio>
         <button onClick={() => windowPinner()} class="pin-button">
           {<img src={windowPin() ? pinnedIcon : unPinnedIcon}></img>}
