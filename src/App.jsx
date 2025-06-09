@@ -20,6 +20,7 @@ const {
 } = window.__TAURI__.notification;
 const { load } = window.__TAURI__.store;
 import sureAudio from "./assets/Are-You-Sure-Trimmed.mp3";
+import prettySureAudio from "./assets/Pretty-Sure.mp3";
 
 // Do you have permission to send a notification?
 let permissionGranted = await isPermissionGranted();
@@ -46,19 +47,20 @@ function App() {
 
   const [taskStore, setStore] = createStore({});
 
-  createEffect(async () =>{
-    for (const item of await taskFile.entries()){
+  createEffect(async () => {
+    for (const item of await taskFile.entries()) {
       const tempTask = new Task(item[1].id, item[1].type, item[1].title, item[1].start, item[1].end, item[1].description, item[1].importance);
       setStore(item[1].id, tempTask);
     }
   })
-  
+
 
   const id = createUniqueId();
 
   const threeDaysAgo = Date.now() - 3 * 86400000;
 
   let question;
+  let answer;
 
   let title = undefined;
   let start;
@@ -134,6 +136,7 @@ function App() {
     taskFile.delete(taskId);
     question.pause();
     question.currentTime = 0;
+    answer.play();
   }
 
   function clickDiv(taskId) {
@@ -141,7 +144,7 @@ function App() {
     setTaskShow((prev) => !prev);
   }
 
-  function maybeDelete(taskId){
+  function maybeDelete(taskId) {
     setTaskId(taskId);
     setDeleteWindow(true);
     question.play();
@@ -177,7 +180,6 @@ function App() {
         description.value,
         importance.value
       );
-      console.log(uuid);
 
       title = start = end = description = importance = undefined;
 
@@ -215,6 +217,7 @@ function App() {
     <main>
       <div class="top-row">
         <audio loop src={sureAudio} ref={question}></audio>
+        <audio src={prettySureAudio} ref={answer}></audio>
         <button onClick={() => windowPinner()} class="pin-button">
           {<img src={windowPin() ? pinnedIcon : unPinnedIcon}></img>}
         </button>
@@ -225,12 +228,6 @@ function App() {
             <h2>Completed</h2>
           </div>
           <div class="column-body completed-body">
-            <button
-              class="add-button"
-              onClick={() => changeColumn("completed")}
-            >
-              +
-            </button>
             <ol class="task-container">
               <For
                 each={Object.values(taskStore).filter(
@@ -266,6 +263,12 @@ function App() {
                 )}
               </For>
             </ol>
+            <button
+              class="add-button"
+              onClick={() => changeColumn("completed")}
+            >
+              +
+            </button>
           </div>
         </div>
         <div class="progress-column">
@@ -273,12 +276,6 @@ function App() {
             <h2>In Progress</h2>
           </div>
           <div class="column-body progress-body">
-            <button
-              class="add-button"
-              onClick={() => changeColumn("inProgress")}
-            >
-              +
-            </button>
 
             <ol class="task-container">
               <For
@@ -315,6 +312,12 @@ function App() {
                 )}
               </For>
             </ol>
+            <button
+              class="add-button"
+              onClick={() => changeColumn("inProgress")}
+            >
+              +
+            </button>
           </div>
         </div>
         <div class="upcoming-column">
@@ -322,9 +325,6 @@ function App() {
             <h2>Upcoming</h2>
           </div>
           <div class="column-body upcoming-body">
-            <button class="add-button" onClick={() => changeColumn("upcoming")}>
-              +
-            </button>
 
             <ol class="task-container">
               <For
@@ -361,6 +361,9 @@ function App() {
                 )}
               </For>
             </ol>
+            <button class="add-button" onClick={() => changeColumn("upcoming")}>
+              +
+            </button>
           </div>
         </div>
       </div>
@@ -374,9 +377,9 @@ function App() {
               <div>
                 <button class="delete-cancel" onClick={() => setDeleteWindow(false)}>Cancel</button>
                 <button class="delete-confirm" onClick={() => deleteTask(taskId())}>Delete</button>
-              </div>      
+              </div>
             </div>
-          </div>      
+          </div>
         </Show>
       </Portal>
 

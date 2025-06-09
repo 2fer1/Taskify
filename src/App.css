@@ -49,6 +49,7 @@ body{
   background-color: #e9eff1e3;
   width: 100%;
   height: calc(100vh - 30px);
+  align-items: stretch;
 }
 
 .column-body{
@@ -114,8 +115,11 @@ body{
 
 .add-button{
   font-size: 22px;
-  padding: 2px 8px;
-  align-self: flex-end;
+  padding: 4px 10px;
+  background-color: white;
+  border: 1px solid rgb(199, 199, 199);
+  border-radius: 20px;
+  align-self: center;
 }
 
 .delete-window{
@@ -173,7 +177,7 @@ body{
 }
 
 .popup-body {
-  background-color: #e3e7e9;
+  background-color: #b7babb;
   display: flex;
   flex-direction: column;
   gap: 1vh;
