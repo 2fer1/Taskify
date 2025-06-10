@@ -59,6 +59,8 @@ function App() {
 
   const threeDaysAgo = Date.now() - 3 * 86400000;
 
+  const taskTypes = ["completed", "inProgress", "upcoming"];
+
   let question;
   let answer;
 
@@ -125,6 +127,14 @@ function App() {
         <button class="delete-button" onClick={() => maybeDelete(task.id)}>
           <img src={trashIcon}></img>
         </button>
+        <div class="arrows">
+          <button>
+            --
+          </button>
+          <button>
+            --
+          </button>
+        </div>
       </div>
     );
   }
