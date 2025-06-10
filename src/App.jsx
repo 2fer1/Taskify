@@ -59,8 +59,6 @@ function App() {
 
   const threeDaysAgo = Date.now() - 3 * 86400000;
 
-  const taskTypes = ["completed", "inProgress", "upcoming"];
-
   let question;
   let answer;
 
@@ -116,6 +114,14 @@ function App() {
         class="task-body"
         classList={{ taskhighlight: task.importance != 1 }}
       >
+        <div class="arrows">
+          <button onClick={() => moveTask(task.id, "left")}>
+            --
+          </button>
+          <button onClick={() => moveTask(task.id, "right")}>
+            --
+          </button>
+        </div>
         <div onClick={() => clickDiv(task.id)}>
           <h3 class="task-title">{task.title}</h3>
           <div class="task-date">
@@ -127,16 +133,33 @@ function App() {
         <button class="delete-button" onClick={() => maybeDelete(task.id)}>
           <img src={trashIcon}></img>
         </button>
-        <div class="arrows">
-          <button>
-            --
-          </button>
-          <button>
-            --
-          </button>
-        </div>
       </div>
     );
+  }
+
+  function moveTask(taskId, direction){
+    if (direction == "left"){
+      if (taskStore[taskId].type == "completed"){
+        console.log(taskStore[taskId].type);
+        setStore(taskId, {
+          type: "upcoming",
+        });
+        console.log(taskStore[taskId].type);
+        console.log(taskStore[taskId].importance);
+      } else if (taskStore[taskId].type == "inProgress"){
+        setStore[taskId].type = "completed";
+      } else {
+        setStore[taskId].type = "inProgress"
+      }
+    } else {
+      if (taskStore[taskId].type == "completed"){
+        setStore[taskId].type = "inProgress";
+      } else if (taskStore[taskId].type == "inProgress"){
+        setStore[taskId].type = "upcoming";
+      } else {
+        setStore[taskId].type = "completed";
+      }
+    }
   }
 
   function deleteTask(taskId) {
