@@ -54,6 +54,10 @@ class Task{
         this.#notified = value;
     }
 
+    set type(value){
+        this.#type = value;
+    }
+
     get printedStart(){
         let year = this.#start.getFullYear();
         let month = this.#start.toLocaleString("en-GB", {month: "long"});
@@ -92,7 +96,7 @@ class Task{
         }
 
         if (hour == 0 || hour == 12){
-            hour = hour + 12;
+            hour = hour + 12
         }
 
         if (hour > 12){

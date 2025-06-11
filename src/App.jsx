@@ -122,8 +122,8 @@ function App() {
         classList={{ taskhighlight: task.importance != 1 }}
       >
         <div class="arrows">
-          <button onClick={() => moveTask(task.id, "left")}>--</button>
-          <button onClick={() => moveTask(task.id, "right")}>--</button>
+          <button onClick={() => moveTask(task.id, "left")}>←</button>
+          <button onClick={() => moveTask(task.id, "right")}>→</button>
         </div>
         <div onClick={() => clickDiv(task.id)}>
           <h3 class="task-title">{task.title}</h3>
@@ -141,75 +141,45 @@ function App() {
   }
 
   function moveTask(taskId, direction) {
+    let tempTask = new Task(
+      taskStore[taskId].id,
+      taskStore[taskId].type,
+      taskStore[taskId].title,
+      taskStore[taskId].start,
+      taskStore[taskId].end,
+      taskStore[taskId].description,
+      taskStore[taskId].importance,
+      taskStore[taskId].notified
+    )
+
+    setStore(taskId, undefined);
+
     if (direction == "left") {
-      if (taskStore[taskId].type == "completed") {
-        setStore(taskId, {
-          id: taskStore[taskId].id,
-          type: "upcoming",
-          title: taskStore[taskId].title,
-          start: taskStore[taskId].start,
-          end: taskStore[taskId].end,
-          description: taskStore[taskId].description,
-          importance: taskStore[taskId].importance,
-          notified: taskStore[taskId].notified,
-        });
-      } else if (taskStore[taskId].type == "inProgress") {
-        setStore(taskId, {
-          id: taskStore[taskId].id,
-          type: "completed",
-          title: taskStore[taskId].title,
-          start: taskStore[taskId].start,
-          end: taskStore[taskId].end,
-          description: taskStore[taskId].description,
-          importance: taskStore[taskId].importance,
-          notified: taskStore[taskId].notified,
-        });
+      if (tempTask.type == "completed") {
+        tempTask.type = "upcoming";
+        setStore(taskId, tempTask);
+      } else if (tempTask.type == "inProgress") {
+        tempTask.type = "completed";
+        setStore(taskId, undefined);
+        setStore(taskId, tempTask);
       } else {
-        setStore(taskId, {
-          id: taskStore[taskId].id,
-          type: "inProgress",
-          title: taskStore[taskId].title,
-          start: taskStore[taskId].start,
-          end: taskStore[taskId].end,
-          description: taskStore[taskId].description,
-          importance: taskStore[taskId].importance,
-          notified: taskStore[taskId].notified,
-        });
+        tempTask.type = "inProgress";
+        setStore(taskId, undefined);
+        setStore(taskId, tempTask);
       }
     } else {
-      if (taskStore[taskId].type == "completed") {
-        setStore(taskId, {
-          id: taskStore[taskId].id,
-          type: "inProgress",
-          title: taskStore[taskId].title,
-          start: taskStore[taskId].start,
-          end: taskStore[taskId].end,
-          description: taskStore[taskId].description,
-          importance: taskStore[taskId].importance,
-          notified: taskStore[taskId].notified,
-        });
-      } else if (taskStore[taskId].type == "inProgress") {
-        setStore(taskId, {
-          id: taskStore[taskId].id,
-          type: "upcoming",
-          title: taskStore[taskId].title,
-          start: taskStore[taskId].start,
-          end: taskStore[taskId].end,
-          description: taskStore[taskId].description,
-          importance: taskStore[taskId].importance,
-          notified: taskStore[taskId].notified,
-        });
+      if (tempTask.type == "completed") {
+        tempTask.type = "inProgress";
+        setStore(taskId, undefined);
+        setStore(taskId, tempTask);
+      } else if (tempTask.type == "inProgress") {
+        tempTask.type = "upcoming";
+        setStore(taskId, undefined);
+        setStore(taskId, tempTask);
       } else {
-        setStore(taskId, {
-          id: taskStore[taskId].id,
-          type: "completed",
-          title: taskStore[taskId].title,
-          start: taskStore[taskId].start,
-          end: taskStore[taskId].end,
-          description: taskStore[taskId].description,
-          importance: taskStore[taskId].importance,
-          notified: taskStore[taskId].notified,
-        });
+        tempTask.type = "completed";
+        setStore(taskId, undefined);
+        setStore(taskId, tempTask);
       }
     }
   }
@@ -234,6 +204,8 @@ function App() {
     setDeleteWindow(true);
     question.play();
   }
+
+  function cancelDelete
 
   function changeColumn(column) {
     setColumn(column);
