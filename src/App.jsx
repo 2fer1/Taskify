@@ -49,11 +49,18 @@ function App() {
 
   createEffect(async () => {
     for (const item of await taskFile.entries()) {
-      const tempTask = new Task(item[1].id, item[1].type, item[1].title, item[1].start, item[1].end, item[1].description, item[1].importance);
+      const tempTask = new Task(
+        item[1].id,
+        item[1].type,
+        item[1].title,
+        item[1].start,
+        item[1].end,
+        item[1].description,
+        item[1].importance
+      );
       setStore(item[1].id, tempTask);
     }
-  })
-
+  });
 
   const id = createUniqueId();
 
@@ -115,12 +122,8 @@ function App() {
         classList={{ taskhighlight: task.importance != 1 }}
       >
         <div class="arrows">
-          <button onClick={() => moveTask(task.id, "left")}>
-            --
-          </button>
-          <button onClick={() => moveTask(task.id, "right")}>
-            --
-          </button>
+          <button onClick={() => moveTask(task.id, "left")}>--</button>
+          <button onClick={() => moveTask(task.id, "right")}>--</button>
         </div>
         <div onClick={() => clickDiv(task.id)}>
           <h3 class="task-title">{task.title}</h3>
@@ -137,27 +140,76 @@ function App() {
     );
   }
 
-  function moveTask(taskId, direction){
-    if (direction == "left"){
-      if (taskStore[taskId].type == "completed"){
-        console.log(taskStore[taskId].type);
+  function moveTask(taskId, direction) {
+    if (direction == "left") {
+      if (taskStore[taskId].type == "completed") {
         setStore(taskId, {
+          id: taskStore[taskId].id,
           type: "upcoming",
+          title: taskStore[taskId].title,
+          start: taskStore[taskId].start,
+          end: taskStore[taskId].end,
+          description: taskStore[taskId].description,
+          importance: taskStore[taskId].importance,
+          notified: taskStore[taskId].notified,
         });
-        console.log(taskStore[taskId].type);
-        console.log(taskStore[taskId].importance);
-      } else if (taskStore[taskId].type == "inProgress"){
-        setStore[taskId].type = "completed";
+      } else if (taskStore[taskId].type == "inProgress") {
+        setStore(taskId, {
+          id: taskStore[taskId].id,
+          type: "completed",
+          title: taskStore[taskId].title,
+          start: taskStore[taskId].start,
+          end: taskStore[taskId].end,
+          description: taskStore[taskId].description,
+          importance: taskStore[taskId].importance,
+          notified: taskStore[taskId].notified,
+        });
       } else {
-        setStore[taskId].type = "inProgress"
+        setStore(taskId, {
+          id: taskStore[taskId].id,
+          type: "inProgress",
+          title: taskStore[taskId].title,
+          start: taskStore[taskId].start,
+          end: taskStore[taskId].end,
+          description: taskStore[taskId].description,
+          importance: taskStore[taskId].importance,
+          notified: taskStore[taskId].notified,
+        });
       }
     } else {
-      if (taskStore[taskId].type == "completed"){
-        setStore[taskId].type = "inProgress";
-      } else if (taskStore[taskId].type == "inProgress"){
-        setStore[taskId].type = "upcoming";
+      if (taskStore[taskId].type == "completed") {
+        setStore(taskId, {
+          id: taskStore[taskId].id,
+          type: "inProgress",
+          title: taskStore[taskId].title,
+          start: taskStore[taskId].start,
+          end: taskStore[taskId].end,
+          description: taskStore[taskId].description,
+          importance: taskStore[taskId].importance,
+          notified: taskStore[taskId].notified,
+        });
+      } else if (taskStore[taskId].type == "inProgress") {
+        setStore(taskId, {
+          id: taskStore[taskId].id,
+          type: "upcoming",
+          title: taskStore[taskId].title,
+          start: taskStore[taskId].start,
+          end: taskStore[taskId].end,
+          description: taskStore[taskId].description,
+          importance: taskStore[taskId].importance,
+          notified: taskStore[taskId].notified,
+        });
       } else {
-        setStore[taskId].type = "completed";
+        setStore(taskId, {
+          id: taskStore[taskId].id,
+          type: "completed",
+          title: taskStore[taskId].title,
+          start: taskStore[taskId].start,
+          end: taskStore[taskId].end,
+          description: taskStore[taskId].description,
+          importance: taskStore[taskId].importance,
+          notified: taskStore[taskId].notified,
+        });
       }
     }
   }
@@ -309,7 +361,6 @@ function App() {
             <h2>In Progress</h2>
           </div>
           <div class="column-body progress-body">
-
             <ol class="task-container">
               <For
                 each={Object.values(taskStore).filter(
@@ -358,7 +409,6 @@ function App() {
             <h2>Upcoming</h2>
           </div>
           <div class="column-body upcoming-body">
-
             <ol class="task-container">
               <For
                 each={Object.values(taskStore).filter(
@@ -408,8 +458,18 @@ function App() {
               <h2>Delete</h2>
               <p>Are you sure you want to delete this task?</p>
               <div>
-                <button class="delete-cancel" onClick={() => setDeleteWindow(false)}>Cancel</button>
-                <button class="delete-confirm" onClick={() => deleteTask(taskId())}>Delete</button>
+                <button
+                  class="delete-cancel"
+                  onClick={() => setDeleteWindow(false)}
+                >
+                  Cancel
+                </button>
+                <button
+                  class="delete-confirm"
+                  onClick={() => deleteTask(taskId())}
+                >
+                  Delete
+                </button>
               </div>
             </div>
           </div>
