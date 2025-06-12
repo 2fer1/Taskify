@@ -119,7 +119,7 @@ function App() {
     return (
       <div
         class="task-body"
-        classList={{ taskhighlight: task.importance != 1 }}
+        classList={{ taskhighlight: task.importance == 2, taskhighlightextra: task.importance == 3 }}
       >
         <div class="arrows">
           <button onClick={() => moveTask(task.id, "left")}>←</button>
@@ -205,7 +205,11 @@ function App() {
     question.play();
   }
 
-  function cancelDelete
+  function cancelDelete(){
+    setDeleteWindow(false);
+    question.pause();
+    question.currentTime = 0;
+  }
 
   function changeColumn(column) {
     setColumn(column);
@@ -432,7 +436,7 @@ function App() {
               <div>
                 <button
                   class="delete-cancel"
-                  onClick={() => setDeleteWindow(false)}
+                  onClick={() => cancelDelete()}
                 >
                   Cancel
                 </button>
