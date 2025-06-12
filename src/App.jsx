@@ -153,6 +153,7 @@ function App() {
     )
 
     setStore(taskId, undefined);
+    taskFile.delete(taskId);
 
     if (direction == "left") {
       if (tempTask.type == "completed") {
@@ -182,6 +183,18 @@ function App() {
         setStore(taskId, tempTask);
       }
     }
+
+      taskFile.set(taskId, {
+        id: tempTask.id,
+        type: tempTask.type,
+        title: tempTask.title,
+        start: tempTask.start,
+        end: tempTask.end,
+        description: tempTask.description,
+        importance: tempTask.importance,
+        notified: tempTask.notified,
+      });
+      taskFile.save();
   }
 
   function deleteTask(taskId) {
