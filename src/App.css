@@ -321,8 +321,8 @@ body{
 .close-button{
   background: none;
   margin-left: auto;
-  margin-top: -3vh;
-  margin-right: -2vw;
+  margin-top: -15px;
+  margin-right: -10px;
   width: fit-content;
   border: none;
   font-size: 18px;
