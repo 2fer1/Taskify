@@ -6,9 +6,9 @@ class Task{
     #end;
     #description;
     #importance;
-    #notified = false;
+    #notified;
 
-    constructor(id, type, title, start, end, description, importance){
+    constructor(id, type, title, start, end, description, importance, notified = false){
         this.#id = id;
         this.#type = type;
         this.#title = title;
@@ -16,6 +16,7 @@ class Task{
         this.#end = new Date(end);
         this.#description = description;
         this.#importance = importance;
+        this.#notified = notified;
     }
 
     get id(){

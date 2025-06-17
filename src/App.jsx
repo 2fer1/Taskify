@@ -56,7 +56,8 @@ function App() {
         item[1].start,
         item[1].end,
         item[1].description,
-        item[1].importance
+        item[1].importance,
+        item[1].notified
       );
       setStore(item[1].id, tempTask);
     }
@@ -252,7 +253,7 @@ function App() {
         start.value,
         end.value,
         description.value,
-        importance.value
+        importance.value,
       );
 
       title = start = end = description = importance = undefined;
